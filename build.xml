@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Ant SPK Task" basedir="." default="jar">
+
+	<target name="compile">
+		<mkdir dir="build" />
+
+		<javac srcdir="src" destdir="build" target="1.8" source="1.8" encoding="UTF-8" debug="true" includeAntRuntime="false">
+			<classpath>
+				<fileset dir="lib" includes="*.jar" />
+			</classpath>
+		</javac>
+
+		<copy todir="build">
+			<fileset dir="src" includes="**/*.properties" />
+			<fileset dir="src" includes="**/*.xml" />
+		</copy>
+	</target>
+
+
+	<target name="jar" depends="compile">
+		<mkdir dir="dist" />
+
+		<jar destfile="dist/ant-spk.jar">
+			<fileset dir="build" />
+		</jar>
+	</target>
+
+
+	<target name="test" depends="jar">
+		<taskdef name="spk" classname="net.filebot.ant.spk.SpkTask" classpath="dist/ant-spk.jar" />
+
+		<spk destdir="dist" name="ant-spk-test" version="0.1" arch="noarch">
+			<info name="description" value="Test package made with ant-spk" />
+			<info name="maintainer" value="rednoah" />
+
+			<package dir="examples/helloworld/app" includes="bin/**" filemode="755" />
+			<package dir="examples/helloworld/app" excludes="bin/**" />
+			<scripts dir="examples/helloworld/spk/scripts" filemode="755" />
+			<wizard dir="examples/helloworld/spk/wizard_uifiles" />
+		</spk>
+	</target>
+
+
+	<target name="clean">
+		<delete dir="build" />
+		<delete dir="dist" />
+	</target>
+
+</project>
