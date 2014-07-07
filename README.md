@@ -1,7 +1,7 @@
 ant-spk-task
 ============
 
-Ant Task for creating SPK packages for Synology NAS
+Ant Task for creating SPK packages for Synology NAS.
 
 Introduction
 ------------
@@ -15,8 +15,8 @@ Example
 <spk destdir="dist" name="Hello World" version="0.1" arch="noarch">
 	<info name="description" value="Hello World package made with ant-spk" />
 	<info name="maintainer" value="rednoah" />
-	<package dir="examples/helloworld/app"  />
-	<scripts dir="examples/helloworld/spk/scripts" filemode="755" />
+	<package dir="helloworld/app"  />
+	<scripts dir="helloworld/spk/scripts" filemode="755" />
 </spk>
 ```
 
