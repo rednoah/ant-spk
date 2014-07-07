@@ -1,4 +1,4 @@
-ant-spk-task
+ant-spk
 ============
 
 Ant Task for creating SPK packages for Synology NAS.
