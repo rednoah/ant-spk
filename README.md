@@ -5,7 +5,7 @@ Ant Task for creating SPK packages for Synology NAS.
 
 Introduction
 ------------
-First have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](http://usdl.synology.com/download/ds/userguide/Synology_DiskStation_Manager_3rd_Party_Apps_Developer_Guide.pdf) and read the `Package Structure` section.
+First have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](http://usdl.synology.com/download/ds/userguide/Synology_DiskStation_Manager_3rd_Party_Apps_Developer_Guide.pdf) and read the **Package Structure** section.
 
 Example
 -------
@@ -23,3 +23,8 @@ Example
 Downloads
 ---------
 The latest binaries are in the [release section](https://github.com/rednoah/ant-spk-task/releases).
+
+
+Real World Examples
+-------------
+**ant-spk** is used to automatically build **.spk** packages for [FileBot](http://www.filebot.net/) so check out the [build.xml](http://sourceforge.net/p/filebot/code/HEAD/tree/trunk/build.xml) for a more comprehensive example. ;)
