@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Ant SPK Task" basedir="." default="make-spk">
+
+	<target name="make-spk">
+		<taskdef name="spk" classname="net.filebot.ant.spk.SpkTask" classpath="../../dist/ant-spk.jar" />
+		
+		<spk destdir="dist" name="Hello World" version="0.1" arch="noarch">
+			<info name="description" value="Hello World package made with ant-spk" />
+			<info name="maintainer" value="rednoah" />
+
+			<package dir="app" includes="bin/**" filemode="755" />
+			<package dir="app" excludes="bin/**" />
+			<scripts dir="spk/scripts" filemode="755" />
+			<wizard dir="spk/wizard_uifiles" />
+		</spk>
+	</target>
+
+</project>
