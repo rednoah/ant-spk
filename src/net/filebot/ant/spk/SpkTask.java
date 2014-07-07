@@ -125,13 +125,6 @@ public class SpkTask extends Task {
 		spkFiles.add(files);
 	}
 
-	public void setIcon120(File file) {
-		TarFileSet files = new TarFileSet();
-		files.setFullpath("PACKAGE_ICON_120.PNG");
-		files.setFile(file);
-		spkFiles.add(files);
-	}
-
 	public void setLicense(File file) {
 		TarFileSet files = new TarFileSet();
 		files.setFullpath("LICENSE");
