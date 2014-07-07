@@ -11,11 +11,13 @@ import java.util.Map.Entry;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.apache.tools.ant.taskdefs.Checksum;
 import org.apache.tools.ant.taskdefs.Delete;
 import org.apache.tools.ant.taskdefs.Tar;
 import org.apache.tools.ant.taskdefs.Tar.TarCompressionMethod;
 import org.apache.tools.ant.taskdefs.Tar.TarFileSet;
 import org.apache.tools.ant.taskdefs.Tar.TarLongFileMode;
+import org.apache.tools.ant.types.EnumeratedAttribute;
 import org.apache.tools.ant.types.FileSet;
 
 public class SpkTask extends Task {
@@ -31,6 +33,39 @@ public class SpkTask extends Task {
 
 		public void setValue(String value) {
 			this.value = value;
+		}
+	}
+
+	public static class Icon {
+
+		public static class Size extends EnumeratedAttribute {
+
+			@Override
+			public String[] getValues() {
+				return new String[] { "72", "120" };
+			}
+
+			public String getFileName() {
+				switch (value) {
+				case "72":
+					return "PACKAGE_ICON.PNG";
+				case "120":
+					return "PACKAGE_ICON_120.PNG";
+				default:
+					throw new IllegalStateException();
+				}
+			}
+		}
+
+		Size size;
+		File file;
+
+		public void setSize(Size size) {
+			this.size = size;
+		}
+
+		public void setFile(File file) {
+			this.file = file;
 		}
 	}
 
@@ -83,10 +118,10 @@ public class SpkTask extends Task {
 		spkFiles.add(files);
 	}
 
-	public void setIcon(File file) {
+	public void addConfiguredIcon(Icon icon) {
 		TarFileSet files = new TarFileSet();
-		files.setFullpath("PACKAGE_ICON.PNG");
-		files.setFile(file);
+		files.setFullpath(icon.size.getFileName());
+		files.setFile(icon.file);
 		spkFiles.add(files);
 	}
 
@@ -120,8 +155,8 @@ public class SpkTask extends Task {
 		spkStaging.mkdirs(); // make sure staging folder exists
 
 		// generate info and package files and add to spk fileset
-		prepareInfo(spkStaging);
 		preparePackage(spkStaging);
+		prepareInfo(spkStaging);
 
 		tar(spkFile, false, spkFiles);
 
@@ -131,6 +166,16 @@ public class SpkTask extends Task {
 	private void preparePackage(File tempDirectory) {
 		File packageFile = new File(tempDirectory, "package.tgz");
 		tar(packageFile, true, packageFiles);
+
+		String resultKey = "package.tgz.md5";
+		Checksum checksum = new Checksum();
+		checksum.setProject(getProject());
+		checksum.setTaskName(getTaskName());
+		checksum.setFile(packageFile);
+		checksum.setAlgorithm("MD5");
+		checksum.setProperty(resultKey);
+		checksum.perform();
+		infoList.put("checksum", getProject().getProperty(resultKey));
 
 		TarFileSet package_tgz = new TarFileSet();
 		package_tgz.setFullpath(packageFile.getName());
