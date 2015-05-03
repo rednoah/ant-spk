@@ -42,7 +42,7 @@ public class SpkTask extends Task {
 
 			@Override
 			public String[] getValues() {
-				return new String[] { "72", "256" };
+				return new String[] { "72", "140", "256" };
 			}
 
 			public String getFileName() {
@@ -50,7 +50,7 @@ public class SpkTask extends Task {
 				case "72":
 					return "PACKAGE_ICON.PNG";
 				default:
-					return String.format("PACKAGE_ICON_%d.PNG", value);
+					return String.format("PACKAGE_ICON_%s.PNG", value);
 				}
 			}
 		}
