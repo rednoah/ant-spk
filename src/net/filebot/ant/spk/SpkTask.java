@@ -142,8 +142,12 @@ public class SpkTask extends Task {
 
 		File spkStaging = new File(destDir, spkName);
 		File spkFile = new File(destDir, spkName + ".spk");
+		
+		// make sure staging folder is clean
+		clean(spkStaging)
 
-		spkStaging.mkdirs(); // make sure staging folder exists
+		// make sure staging folder exists
+		spkStaging.mkdirs();
 
 		// generate info and package files and add to spk fileset
 		preparePackage(spkStaging);
