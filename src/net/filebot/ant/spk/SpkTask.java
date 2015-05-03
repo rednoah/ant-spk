@@ -142,9 +142,6 @@ public class SpkTask extends Task {
 
 		File spkStaging = new File(destDir, spkName);
 		File spkFile = new File(destDir, spkName + ".spk");
-		
-		// make sure staging folder is clean
-		clean(spkStaging)
 
 		// make sure staging folder exists
 		spkStaging.mkdirs();
@@ -154,6 +151,9 @@ public class SpkTask extends Task {
 		prepareInfo(spkStaging);
 
 		tar(spkFile, false, spkFiles);
+
+		// make sure staging folder is clean for next time
+		clean(spkStaging);
 	}
 
 	private void preparePackage(File tempDirectory) {
