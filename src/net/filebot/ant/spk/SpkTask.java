@@ -42,17 +42,15 @@ public class SpkTask extends Task {
 
 			@Override
 			public String[] getValues() {
-				return new String[] { "72", "120" };
+				return new String[] { "72", "256" };
 			}
 
 			public String getFileName() {
 				switch (value) {
 				case "72":
 					return "PACKAGE_ICON.PNG";
-				case "120":
-					return "PACKAGE_ICON_120.PNG";
 				default:
-					throw new IllegalStateException();
+					return String.format("PACKAGE_ICON_%d.PNG", value);
 				}
 			}
 		}
@@ -152,8 +150,6 @@ public class SpkTask extends Task {
 		prepareInfo(spkStaging);
 
 		tar(spkFile, false, spkFiles);
-
-		clean(spkStaging);
 	}
 
 	private void preparePackage(File tempDirectory) {
