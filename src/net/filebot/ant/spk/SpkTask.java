@@ -42,7 +42,7 @@ public class SpkTask extends Task {
 
 			@Override
 			public String[] getValues() {
-				return new String[] { "72", "140", "256" };
+				return new String[] { "72", "256" };
 			}
 
 			public String getFileName() {
