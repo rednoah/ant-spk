@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0">
+	<info organisation="net.filebot" module="ant.spk" />
+	<configurations>
+		<conf name="sources" description="source jars" />
+		<conf name="binaries" description="binary jars" />
+	</configurations>
+	<dependencies>
+		<dependency org="org.apache.ant" name="ant" rev="1.9.4"
+			conf="binaries->default" />
+		<dependency org="javax.json" name="javax.json-api" rev="1.0"
+			conf="binaries->default" />
+	</dependencies>
+</ivy-module>

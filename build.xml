@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Ant SPK Task" basedir="." default="jar">
+<project name="Ant SPK Task" basedir="." default="jar" xmlns:ivy="antlib:org.apache.ivy.ant">
 
 	<target name="compile">
 		<mkdir dir="build" />
@@ -19,7 +19,7 @@
 
 	<target name="jar" depends="compile">
 		<mkdir dir="dist" />
-
+		
 		<jar destfile="dist/ant-spk.jar">
 			<fileset dir="build" />
 		</jar>
@@ -40,6 +40,9 @@
 		</spk>
 	</target>
 
+	<target name="resolve" description="Retrieve dependencies with ivy">
+		<ivy:retrieve pattern="${basedir}/lib/[artifact].[ext]" conf="binaries" />
+	</target>
 
 	<target name="clean">
 		<delete dir="build" />
