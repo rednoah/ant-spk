@@ -4,7 +4,7 @@
 	<target name="spk">
 		<delete dir="dist" />
 
-		<syno:spk destdir="dist" name="Hello World" version="0.1" arch="noarch">
+		<syno:spk destdir="dist" name="helloworld" version="0.1" arch="noarch">
 			<info name="description" value="Hello World package made with ant-spk" />
 			<info name="maintainer" value="rednoah" />
 
@@ -15,12 +15,6 @@
 
 			<codesign keyid="D545C93D" pubring="gpg/pubring.gpg" secring="gpg/secring.gpg" password="" />
 		</syno:spk>
-	</target>
-
-	<target name="clean">
-		<delete dir="${dir.lib}" />
-		<delete dir="${dir.build}" />
-		<delete dir="${dir.dist}" />
 	</target>
 
 </project>

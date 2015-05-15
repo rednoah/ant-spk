@@ -6,6 +6,8 @@
 	<property name="dir.build" location="${basedir}/build" />
 	<property name="dir.dist" location="${basedir}/dist" />
 
+	<property name="dir.example" location="examples/helloworld" />
+
 
 	<target name="compile" depends="resolve">
 		<mkdir dir="${dir.build}" />
@@ -33,13 +35,11 @@
 
 
 	<target name="test" depends="jar">
-		<exec executable="ant" dir="examples/helloworld">
+		<exec executable="ant" dir="${dir.example}">
 			<arg value="-lib" />
 			<arg value="${dir.dist}" />
 			<arg value="-lib" />
 			<arg value="${dir.lib}" />
-			<arg value="clean" />
-			<arg value="spk" />
 		</exec>
 	</target>
 
@@ -53,6 +53,7 @@
 		<delete dir="${dir.lib}" />
 		<delete dir="${dir.build}" />
 		<delete dir="${dir.dist}" />
+		<delete dir="${dir.example}/dist" />
 	</target>
 
 </project>
