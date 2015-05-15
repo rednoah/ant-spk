@@ -3,7 +3,6 @@
 		"org.example.HelloWorld": {
 			"type": "legacy",
 			"title": "Hello World",
-			"desc": "Hello World package built with ant-spk",
 			"icon": "images/icon_{0}.png",
 			"url": "3rdparty/helloworld/index.html"
 		}

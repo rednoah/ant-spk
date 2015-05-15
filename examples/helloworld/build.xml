@@ -2,18 +2,13 @@
 <project name="Ant SPK Task" basedir="." default="spk" xmlns:syno="antlib:net.filebot.ant.spk">
 
 	<target name="spk">
-		<delete dir="dist" />
 
 		<syno:spk destdir="dist" name="helloworld" version="0.1" arch="noarch">
 			<info name="displayname" value="Hello World" />
 			<info name="description" value="Hello World package built with ant-spk" />
 
-			<info name="maintainer" value="rednoah" />
-			<info name="maintainer_url" value="https://github.com/rednoah" />
-			<info name="distributor" value="rednoah" />
-			<info name="distributor_url" value="https://github.com/rednoah/ant-spk" />
-			<info name="support_url" value="https://github.com/rednoah/ant-spk/issues" />
-			<info name="helpurl" value="https://github.com/rednoah/ant-spk/blob/master/README.md" />
+			<info name="maintainer" value="ant-spk" />
+			<info name="maintainer_url" value="https://github.com/rednoah/ant-spk" />
 
 			<info name="dsmappname" value="org.example.HelloWorld" />
 			<info name="dsmuidir" value="dsm" />
@@ -29,6 +24,7 @@
 
 			<codesign keyid="D545C93D" pubring="gpg/pubring.gpg" secring="gpg/secring.gpg" password="" />
 		</syno:spk>
+
 	</target>
 
 </project>
