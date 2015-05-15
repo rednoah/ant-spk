@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/binaries/ant-jar.jar"/>
+	<classpathentry kind="lib" path="lib/binaries/ant-jar.jar" sourcepath="lib/binaries/ant-source.jar"/>
 	<classpathentry kind="lib" path="lib/binaries/ant-launcher-jar.jar"/>
 	<classpathentry kind="lib" path="lib/binaries/bcpg-jdk15on-jar.jar"/>
 	<classpathentry kind="lib" path="lib/binaries/bcprov-jdk15on-jar.jar"/>
