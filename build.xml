@@ -6,7 +6,7 @@
 
 		<javac srcdir="src" destdir="build" target="1.8" source="1.8" encoding="UTF-8" debug="true" includeAntRuntime="false">
 			<classpath>
-				<fileset dir="lib" includes="*.jar" />
+				<fileset dir="lib" includes="**/*.jar" />
 			</classpath>
 		</javac>
 
@@ -19,7 +19,7 @@
 
 	<target name="jar" depends="compile">
 		<mkdir dir="dist" />
-		
+
 		<jar destfile="dist/ant-spk.jar">
 			<fileset dir="build" />
 		</jar>
@@ -41,7 +41,7 @@
 	</target>
 
 	<target name="resolve" description="Retrieve dependencies with ivy">
-		<ivy:retrieve pattern="${basedir}/lib/[artifact].[ext]" conf="binaries" />
+		<ivy:retrieve pattern="${basedir}/lib/[conf]/[artifact]-[type]-[revision].[ext]" conf="binaries" />
 	</target>
 
 	<target name="clean">

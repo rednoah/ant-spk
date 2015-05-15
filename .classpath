@@ -2,6 +2,15 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/ant.jar"/>
+	<classpathentry kind="lib" path="lib/binaries/ant-jar-1.9.4.jar"/>
+	<classpathentry kind="lib" path="lib/binaries/ant-launcher-jar-1.9.4.jar"/>
+	<classpathentry kind="lib" path="lib/binaries/bcpg-jdk15on-jar-1.49.jar"/>
+	<classpathentry kind="lib" path="lib/binaries/bcprov-jdk15on-jar-1.49.jar"/>
+	<classpathentry kind="lib" path="lib/binaries/commons-codec-jar-1.9.jar"/>
+	<classpathentry kind="lib" path="lib/binaries/commons-logging-jar-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/binaries/commons-openpgp-jar-1.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/binaries/httpclient-jar-4.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/binaries/httpcore-jar-4.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/binaries/javax.json-api-bundle-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
