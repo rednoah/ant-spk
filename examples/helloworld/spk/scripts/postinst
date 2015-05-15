@@ -2,6 +2,10 @@
 
 # create /usr/local/[package] link
 ln -s "/var/packages/$SYNOPKG_PKGNAME/target" "/usr/local/$SYNOPKG_PKGNAME"
+mkdir -p "/usr/local/bin" && ln -s "/usr/local/$SYNOPKG_PKGNAME/bin/$SYNOPKG_PKGNAME.sh" "/usr/local/bin/$SYNOPKG_PKGNAME"
+
+# prepare message that is used when helloworld is called
+echo "$HELLO_WORLD" > "/usr/local/$SYNOPKG_PKGNAME/message.txt"
 
 # return successfully
 exit 0

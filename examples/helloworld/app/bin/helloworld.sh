@@ -1,2 +1,2 @@
 #!/bin/sh
-echo "Hello World!"
+cat "/usr/local/helloworld/message.txt"

@@ -1,0 +1,15 @@
+[{
+	"step_title": "Step 1",
+	"items": [{
+		"type": "textfield",
+		"desc": "Please enter your Hello World message.",
+		"subitems": [{
+			"key": "HELLO_WORLD",
+			"desc": "Message",
+			"defaultValue": "Hello World!",
+			"validator": {
+					"minLength": 5
+			}
+		}]
+	}]
+}]
