@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Ant SPK Task" basedir="." default="make-spk">
+<project name="Ant SPK Task" basedir="." default="make-spk" xmlns:syno="antlib:net.filebot.ant.spk">
 
 	<target name="make-spk">
-		<taskdef name="spk" classname="net.filebot.ant.spk.SpkTask" classpath="../../dist/ant-spk.jar" />
-		
-		<spk destdir="dist" name="Hello World" version="0.1" arch="noarch">
+		<delete dir="dist" />
+
+		<syno:spk destdir="dist" name="Hello World" version="0.1" arch="noarch">
 			<info name="description" value="Hello World package made with ant-spk" />
 			<info name="maintainer" value="rednoah" />
 
@@ -12,7 +12,9 @@
 			<package dir="app" excludes="bin/**" />
 			<scripts dir="spk/scripts" filemode="755" />
 			<wizard dir="spk/wizard_uifiles" />
-		</spk>
+
+			<codesign keyid="D545C93D" pubring="gpg/pubring.gpg" secring="gpg/secring.gpg" password="" />
+		</syno:spk>
 	</target>
 
 </project>

@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Ant SPK Task" basedir="." default="jar" xmlns:ivy="antlib:org.apache.ivy.ant">
 
-	<target name="compile">
-		<mkdir dir="build" />
+	<property name="dir.src" location="${basedir}/src" />
+	<property name="dir.lib" location="${basedir}/lib/binaries" />
+	<property name="dir.build" location="${basedir}/build" />
+	<property name="dir.dist" location="${basedir}/dist" />
 
-		<javac srcdir="src" destdir="build" target="1.8" source="1.8" encoding="UTF-8" debug="true" includeAntRuntime="false">
+
+	<target name="compile" depends="resolve">
+		<mkdir dir="${dir.build}" />
+
+		<javac srcdir="${dir.src}" destdir="${dir.build}" target="1.8" source="1.8" encoding="UTF-8" debug="true" includeAntRuntime="false">
 			<classpath>
-				<fileset dir="lib" includes="**/*.jar" />
+				<fileset dir="${dir.lib}" includes="**/*.jar" />
 			</classpath>
 		</javac>
 
-		<copy todir="build">
-			<fileset dir="src" includes="**/*.properties" />
-			<fileset dir="src" includes="**/*.xml" />
+		<copy todir="${dir.build}">
+			<fileset dir="${dir.src}" includes="**/*.properties" />
+			<fileset dir="${dir.src}" includes="**/*.xml" />
 		</copy>
 	</target>
 
@@ -21,32 +27,30 @@
 		<mkdir dir="dist" />
 
 		<jar destfile="dist/ant-spk.jar">
-			<fileset dir="build" />
+			<fileset dir="${dir.build}" />
 		</jar>
 	</target>
 
 
 	<target name="test" depends="jar">
-		<taskdef name="spk" classname="net.filebot.ant.spk.SpkTask" classpath="dist/ant-spk.jar" />
-
-		<spk destdir="dist" name="ant-spk-test" version="0.1" arch="noarch">
-			<info name="description" value="Test package made with ant-spk" />
-			<info name="maintainer" value="rednoah" />
-
-			<package dir="examples/helloworld/app" includes="bin/**" filemode="755" />
-			<package dir="examples/helloworld/app" excludes="bin/**" />
-			<scripts dir="examples/helloworld/spk/scripts" filemode="755" />
-			<wizard dir="examples/helloworld/spk/wizard_uifiles" />
-		</spk>
+		<exec executable="ant" dir="examples/helloworld">
+			<arg value="-lib" />
+			<arg value="${dir.dist}" />
+			<arg value="-lib" />
+			<arg value="${dir.lib}" />
+		</exec>
 	</target>
+
 
 	<target name="resolve" description="Retrieve dependencies with ivy">
-		<ivy:retrieve pattern="${basedir}/lib/[conf]/[artifact]-[type]-[revision].[ext]" conf="binaries" />
+		<ivy:retrieve pattern="${dir.lib}/[artifact]-[type].[ext]" conf="binaries" />
 	</target>
 
+
 	<target name="clean">
-		<delete dir="build" />
-		<delete dir="dist" />
+		<delete dir="${dir.lib}" />
+		<delete dir="${dir.build}" />
+		<delete dir="${dir.dist}" />
 	</target>
 
 </project>
