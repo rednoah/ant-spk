@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.openpgp.ant.OpenPgpSignerTask;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Checksum;
+import org.apache.tools.ant.taskdefs.Concat;
 import org.apache.tools.ant.taskdefs.Delete;
 import org.apache.tools.ant.taskdefs.Tar;
 import org.apache.tools.ant.taskdefs.Tar.TarCompressionMethod;
@@ -77,6 +79,8 @@ public class SpkTask extends Task {
 	List<FileSet> packageFiles = new ArrayList<FileSet>();
 	List<FileSet> spkFiles = new ArrayList<FileSet>();
 
+	CodeSign codesign;
+
 	public void setDestdir(File value) {
 		destDir = value;
 	}
@@ -130,6 +134,10 @@ public class SpkTask extends Task {
 		spkFiles.add(files);
 	}
 
+	public void addConfiguredCodeSign(CodeSign codesign) {
+		this.codesign = codesign;
+	}
+
 	@Override
 	public void execute() throws BuildException {
 		if (destDir == null || !infoList.containsKey(NAME) || !infoList.containsKey(VERSION) || !infoList.containsKey(ARCH))
@@ -149,11 +157,20 @@ public class SpkTask extends Task {
 		// generate info and package files and add to spk fileset
 		preparePackage(spkStaging);
 		prepareInfo(spkStaging);
+		prepareSignature(spkStaging);
 
 		tar(spkFile, false, spkFiles);
 
 		// make sure staging folder is clean for next time
 		clean(spkStaging);
+	}
+
+	private void prepareSignature(File tempDirectory) {
+		if (codesign != null) {
+			codesign.setProject(getProject());
+			codesign.setToken(new File(tempDirectory, CodeSign.SYNO_SIGNATURE));
+			codesign.execute();
+		}
 	}
 
 	private void preparePackage(File tempDirectory) {
