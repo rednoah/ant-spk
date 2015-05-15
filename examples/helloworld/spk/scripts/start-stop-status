@@ -1,2 +1,23 @@
 #!/bin/sh
-exit 0
+
+case "$1" in
+	start)
+		exit 0	# "$SYNOPKG_PKGDEST/start.sh" > "$SYNOPKG_PKGDEST/console.log" 2>&1 &
+	;;
+
+	stop)
+		exit 0	# killall "$SYNOPKG_PKGNAME"
+	;;
+
+	status)
+		exit 0	# ps | grep "$SYNOPKG_PKGNAME" | grep -v 'grep'
+	;;
+
+	log)
+		exit 0 	# echo "$SYNOPKG_PKGDEST/console.log"
+	;;
+
+	*)
+		exit 1
+	;;
+esac
