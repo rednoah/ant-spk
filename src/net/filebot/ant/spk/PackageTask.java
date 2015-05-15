@@ -79,7 +79,7 @@ public class PackageTask extends Task {
 	List<FileSet> packageFiles = new ArrayList<FileSet>();
 	List<FileSet> spkFiles = new ArrayList<FileSet>();
 
-	CodeSign codesign;
+	CodeSignTask codesign;
 
 	public void setDestdir(File value) {
 		destDir = value;
@@ -134,7 +134,7 @@ public class PackageTask extends Task {
 		spkFiles.add(files);
 	}
 
-	public void addConfiguredCodeSign(CodeSign codesign) {
+	public void addConfiguredCodeSign(CodeSignTask codesign) {
 		this.codesign = codesign;
 	}
 
@@ -167,9 +167,21 @@ public class PackageTask extends Task {
 
 	private void prepareSignature(File tempDirectory) {
 		if (codesign != null) {
-			codesign.setProject(getProject());
-			codesign.setToken(new File(tempDirectory, CodeSign.SYNO_SIGNATURE));
+			// select files that need to be signed
+			spkFiles.forEach(codesign::addConfiguredCat);
+
+			// create signature file
+			File signatureFile = new File(tempDirectory, CodeSignTask.SYNO_SIGNATURE);
+			codesign.setToken(signatureFile);
+
+			codesign.bindToOwner(this);
 			codesign.execute();
+
+			// add signature file to output package
+			TarFileSet syno_signature = new TarFileSet();
+			syno_signature.setFullpath(signatureFile.getName());
+			syno_signature.setFile(signatureFile);
+			spkFiles.add(syno_signature);
 		}
 	}
 
