@@ -38,6 +38,8 @@
 			<arg value="${dir.dist}" />
 			<arg value="-lib" />
 			<arg value="${dir.lib}" />
+			<arg value="clean" />
+			<arg value="spk" />
 		</exec>
 	</target>
 

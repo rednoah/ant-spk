@@ -22,7 +22,7 @@ import org.apache.tools.ant.taskdefs.Tar.TarLongFileMode;
 import org.apache.tools.ant.types.EnumeratedAttribute;
 import org.apache.tools.ant.types.FileSet;
 
-public class SpkTask extends Task {
+public class PackageTask extends Task {
 
 	public static class Info {
 
