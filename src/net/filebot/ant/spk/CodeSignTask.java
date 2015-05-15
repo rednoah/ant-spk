@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import org.apache.commons.openpgp.ant.OpenPgpSignerTask;
 import org.apache.http.HttpEntity;
@@ -17,9 +18,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Concat;
-import org.apache.tools.ant.types.FileSet;
-import org.apache.tools.ant.types.resources.Sort;
-import org.apache.tools.ant.types.resources.Union;
+import org.apache.tools.ant.taskdefs.Tar.TarFileSet;
+import org.apache.tools.ant.types.Resource;
 
 public class CodeSignTask extends Task {
 
@@ -55,13 +55,13 @@ public class CodeSignTask extends Task {
 
 	// internal properties
 	File token = new File(SYNO_SIGNATURE);
-	List<FileSet> cats = new ArrayList<FileSet>();
+	List<TarFileSet> cats = new ArrayList<TarFileSet>();
 
 	public void setToken(File token) {
 		this.token = token;
 	}
 
-	public void addConfiguredCat(FileSet files) {
+	public void addConfiguredCat(TarFileSet files) {
 		cats.add(files);
 	}
 
@@ -79,16 +79,16 @@ public class CodeSignTask extends Task {
 		concat.setBinary(true);
 		concat.setOverwrite(true);
 
-		Sort sortedCats = new Sort();
-		sortedCats.setProject(getProject());
-		Union unionCats = new Union();
-		unionCats.setProject(getProject());
+		// cat files in case-sensitive alphabetical tar entry path order
+		TreeMap<String, Resource> sortedCats = new TreeMap<String, Resource>();
+		cats.forEach(fs -> {
+			fs.setProject(getProject());
+			fs.forEach(r -> {
+				sortedCats.put(getTarEntryName(r.getName(), fs), r);
+			});
+		});
 
-		unionCats.addAll(cats);
-		sortedCats.add(unionCats);
-		concat.add(sortedCats);
-
-		// cat all files (in order)
+		sortedCats.values().forEach(concat::add);
 		concat.execute();
 
 		// GPG sign all cat data
@@ -125,4 +125,24 @@ public class CodeSignTask extends Task {
 		}
 	}
 
+	protected String getTarEntryName(String vPath, TarFileSet tarFileSet) {
+		if (vPath.isEmpty() || vPath.startsWith("/"))
+			throw new IllegalArgumentException("Illegal tar entry: " + vPath);
+
+		String fullpath = tarFileSet.getFullpath(getProject());
+		if (fullpath.length() > 0) {
+			return fullpath;
+		}
+
+		String prefix = tarFileSet.getPrefix(getProject());
+		if (prefix.length() > 0) {
+			if (prefix.endsWith("/")) {
+				return prefix + vPath;
+			} else {
+				return prefix + '/' + vPath;
+			}
+		}
+
+		return vPath;
+	}
 }

@@ -9,11 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.openpgp.ant.OpenPgpSignerTask;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Checksum;
-import org.apache.tools.ant.taskdefs.Concat;
 import org.apache.tools.ant.taskdefs.Delete;
 import org.apache.tools.ant.taskdefs.Tar;
 import org.apache.tools.ant.taskdefs.Tar.TarCompressionMethod;
@@ -76,8 +74,8 @@ public class PackageTask extends Task {
 	File destDir;
 	Map<String, String> infoList = new LinkedHashMap<String, String>();
 
-	List<FileSet> packageFiles = new ArrayList<FileSet>();
-	List<FileSet> spkFiles = new ArrayList<FileSet>();
+	List<TarFileSet> packageFiles = new ArrayList<TarFileSet>();
+	List<TarFileSet> spkFiles = new ArrayList<TarFileSet>();
 
 	CodeSignTask codesign;
 
@@ -225,7 +223,7 @@ public class PackageTask extends Task {
 		spkFiles.add(info);
 	}
 
-	private void tar(File destFile, boolean gzip, List<FileSet> files) {
+	private void tar(File destFile, boolean gzip, List<TarFileSet> files) {
 		Tar tar = new Tar();
 		tar.setProject(getProject());
 		tar.setLocation(getLocation());
