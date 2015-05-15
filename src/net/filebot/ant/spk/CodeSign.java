@@ -19,6 +19,7 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Concat;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.resources.Sort;
+import org.apache.tools.ant.types.resources.Union;
 
 public class CodeSign extends Task {
 
@@ -79,7 +80,9 @@ public class CodeSign extends Task {
 
 		Sort sort = new Sort();
 		sort.setProject(getProject());
-		cats.forEach(sort::add);
+		Union union = new Union();
+		union.addAll(cats);
+		sort.add(union);
 		concat.add(sort);
 
 		// cat all files (in order)
