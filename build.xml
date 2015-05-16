@@ -2,11 +2,11 @@
 <project name="ant-spk" basedir="." default="example" xmlns:ivy="antlib:org.apache.ivy.ant">
 
 	<property name="dir.src" location="${basedir}/src" />
-	<property name="dir.lib" location="${basedir}/lib/binaries" />
 	<property name="dir.build" location="${basedir}/build" />
 	<property name="dir.dist" location="${basedir}/dist" />
+	<property name="dir.lib" location="${basedir}/lib/ivy/jar" />
 
-	<property name="dir.example" location="examples/helloworld" />
+	<property name="dir.example" location="${basedir}/examples/helloworld" />
 
 
 	<target name="compile" depends="resolve">
@@ -45,15 +45,15 @@
 
 
 	<target name="resolve" description="Retrieve dependencies with ivy" depends="clean">
-		<ivy:retrieve pattern="${dir.lib}/[artifact]-[type].[ext]" conf="binaries" />
+		<ivy:retrieve pattern="${basedir}/lib/ivy/[type]/[artifact].[ext]" />
 	</target>
 
 
 	<target name="clean">
-		<delete dir="${dir.lib}" />
 		<delete dir="${dir.build}" />
 		<delete dir="${dir.dist}" />
 		<delete dir="${dir.example}/dist" />
+		<delete dir="${basedir}/lib/ivy" />
 	</target>
 
 </project>
