@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Ant SPK Task" basedir="." default="jar" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="ant-spk" basedir="." default="example" xmlns:ivy="antlib:org.apache.ivy.ant">
 
 	<property name="dir.src" location="${basedir}/src" />
 	<property name="dir.lib" location="${basedir}/lib/binaries" />
@@ -34,7 +34,7 @@
 	</target>
 
 
-	<target name="test" depends="jar">
+	<target name="example" depends="jar">
 		<exec executable="ant" dir="${dir.example}">
 			<arg value="-lib" />
 			<arg value="${dir.dist}" />
@@ -44,7 +44,7 @@
 	</target>
 
 
-	<target name="resolve" description="Retrieve dependencies with ivy">
+	<target name="resolve" description="Retrieve dependencies with ivy" depends="clean">
 		<ivy:retrieve pattern="${dir.lib}/[artifact]-[type].[ext]" conf="binaries" />
 	</target>
 
