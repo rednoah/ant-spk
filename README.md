@@ -10,14 +10,35 @@ First have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](ht
 Example
 -------
 ```xml
-<taskdef name="spk" classname="net.filebot.ant.spk.SpkTask" classpath="lib/ant-spk.jar" />
+<project name="Ant SPK Task" basedir="." default="spk" xmlns:syno="antlib:net.filebot.ant.spk">
 
-<spk destdir="dist" name="Hello World" version="0.1" arch="noarch">
-	<info name="description" value="Hello World package made with ant-spk" />
-	<info name="maintainer" value="rednoah" />
-	<package dir="helloworld/app"  />
-	<scripts dir="helloworld/spk/scripts" filemode="755" />
-</spk>
+	<target name="spk">
+
+		<syno:spk destdir="dist" name="helloworld" version="0.1" arch="noarch">
+			<info name="displayname" value="Hello World" />
+			<info name="description" value="Hello World package built with ant-spk" />
+
+			<info name="maintainer" value="ant-spk" />
+			<info name="maintainer_url" value="https://github.com/rednoah/ant-spk" />
+
+			<info name="dsmappname" value="org.example.HelloWorld" />
+			<info name="dsmuidir" value="dsm" />
+
+			<icon size="72" file="app/dsm/images/icon_72.png" />
+			<icon size="256" file="app/dsm/images/icon_256.png" />
+
+			<wizard dir="spk/wizard" />
+			<scripts dir="spk/scripts" filemode="755" />
+
+			<package dir="app" includes="**/*.sh" filemode="755" />
+			<package dir="app" excludes="**/*.sh" />
+
+			<codesign keyid="D545C93D" pubring="gpg/pubring.gpg" secring="gpg/secring.gpg" password="" />
+		</syno:spk>
+
+	</target>
+
+</project>
 ```
 
 Downloads
