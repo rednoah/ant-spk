@@ -5,7 +5,15 @@ Ant Task for creating SPK packages for Synology NAS.
 
 Introduction
 ------------
-First have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](http://usdl.synology.com/download/ds/userguide/Synology_DiskStation_Manager_3rd_Party_Apps_Developer_Guide.pdf) and read the **Package Structure** section.
+I've found the Synology SDK tools for creating and signing SPK packages overly difficult to use and and terrible to automate. So here's an Apache Ant task to handle build automation of SPK packages in an easy to maintain and completely platform-independent manner.
+
+__Ant SPK Task__
+* Much more easy to use than whats in the official Synology SDK docs & tools
+* Automatically create and sign your SPK packages in your automated Ant build
+* Completely platform-agnostic so it works on Windows, Linux and Mac (and everything else that runs Java 8)
+* Supports passphrase protected GPG keychains
+
+Have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](http://usdl.synology.com/download/ds/userguide/Synology_DiskStation_Manager_3rd_Party_Apps_Developer_Guide.pdf) and read the **Package Structure** section to learn more on how SPK packages work.
 
 Example
 -------
