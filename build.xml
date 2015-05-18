@@ -44,7 +44,8 @@
 	</target>
 
 
-	<target name="resolve" description="Retrieve dependencies with ivy" depends="clean">
+	<target name="resolve" description="Retrieve dependencies with ivy">
+		<delete dir="${basedir}/lib/ivy" />
 		<ivy:retrieve pattern="${basedir}/lib/ivy/[type]/[artifact].[ext]" />
 	</target>
 
@@ -53,7 +54,6 @@
 		<delete dir="${dir.build}" />
 		<delete dir="${dir.dist}" />
 		<delete dir="${dir.example}/dist" />
-		<delete dir="${basedir}/lib/ivy" />
 	</target>
 
 </project>
