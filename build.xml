@@ -4,7 +4,7 @@
 	<property name="dir.src" location="${basedir}/src" />
 	<property name="dir.build" location="${basedir}/build" />
 	<property name="dir.dist" location="${basedir}/dist" />
-	<property name="dir.lib" location="${basedir}/lib/ivy/jar" />
+	<property name="dir.lib" location="${basedir}/lib" />
 
 	<property name="dir.example" location="${basedir}/examples/helloworld" />
 
@@ -39,7 +39,9 @@
 			<arg value="-lib" />
 			<arg value="${dir.dist}" />
 			<arg value="-lib" />
-			<arg value="${dir.lib}" />
+			<arg value="${dir.lib}/ivy/jar" />
+			<arg value="-lib" />
+			<arg value="${dir.lib}/ivy/bundle" />
 		</exec>
 	</target>
 

@@ -1,5 +1,7 @@
 package net.filebot.ant.spk;
 
+import static net.filebot.ant.spk.PackageTask.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,8 +24,6 @@ import org.apache.tools.ant.taskdefs.Tar.TarFileSet;
 import org.apache.tools.ant.types.Resource;
 
 public class CodeSignTask extends Task {
-
-	public static final String SYNO_SIGNATURE = "syno_signature.asc";
 
 	// user properties
 	String keyId;

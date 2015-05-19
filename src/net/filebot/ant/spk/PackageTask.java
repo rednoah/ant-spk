@@ -2,7 +2,11 @@ package net.filebot.ant.spk;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -66,6 +70,9 @@ public class PackageTask extends Task {
 			this.file = file;
 		}
 	}
+
+	static final String INFO = "INFO";
+	static final String SYNO_SIGNATURE = "syno_signature.asc";
 
 	static final String NAME = "package";
 	static final String VERSION = "version";
@@ -169,7 +176,7 @@ public class PackageTask extends Task {
 			spkFiles.forEach(codesign::addConfiguredCat);
 
 			// create signature file
-			File signatureFile = new File(tempDirectory, CodeSignTask.SYNO_SIGNATURE);
+			File signatureFile = new File(tempDirectory, SYNO_SIGNATURE);
 			codesign.setToken(signatureFile);
 
 			codesign.bindToOwner(this);
@@ -187,15 +194,7 @@ public class PackageTask extends Task {
 		File packageFile = new File(tempDirectory, "package.tgz");
 		tar(packageFile, true, packageFiles);
 
-		String resultKey = "package.tgz.md5";
-		Checksum checksum = new Checksum();
-		checksum.setProject(getProject());
-		checksum.setTaskName(getTaskName());
-		checksum.setFile(packageFile);
-		checksum.setAlgorithm("MD5");
-		checksum.setProperty(resultKey);
-		checksum.perform();
-		infoList.put("checksum", getProject().getProperty(resultKey));
+		infoList.put("checksum", md5(packageFile));
 
 		TarFileSet package_tgz = new TarFileSet();
 		package_tgz.setFullpath(packageFile.getName());
@@ -209,7 +208,7 @@ public class PackageTask extends Task {
 			infoText.append(it.getKey()).append('=').append('"').append(it.getValue()).append('"').append('\n');
 		}
 
-		File infoFile = new File(tempDirectory, "INFO");
+		File infoFile = new File(tempDirectory, INFO);
 		log("Generating INFO: " + infoFile);
 		try {
 			Files.write(infoFile.toPath(), infoText.toString().getBytes("UTF-8"));
@@ -259,6 +258,16 @@ public class PackageTask extends Task {
 		cleanupTask.setLocation(getLocation());
 		cleanupTask.setDir(tempDirectory);
 		cleanupTask.perform();
+	}
+
+	static String md5(File file) {
+		try {
+			MessageDigest hash = MessageDigest.getInstance("MD5");
+			hash.update(Files.readAllBytes(file.toPath()));
+			return String.format("%032x", new BigInteger(1, hash.digest())); // as hex string
+		} catch (IOException | NoSuchAlgorithmException e) {
+			throw new BuildException(e);
+		}
 	}
 
 }
