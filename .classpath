@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/ivy/jar/ant-launcher.jar"/>
-	<classpathentry kind="lib" path="lib/ivy/jar/ant.jar"/>
+	<classpathentry kind="lib" path="lib/ivy/jar/ant.jar" sourcepath="lib/ivy/source/ant.jar"/>
 	<classpathentry kind="lib" path="lib/ivy/jar/bcpg-jdk15on.jar"/>
 	<classpathentry kind="lib" path="lib/ivy/jar/bcprov-jdk15on.jar"/>
 	<classpathentry kind="lib" path="lib/ivy/jar/commons-codec.jar"/>
@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="lib/ivy/jar/httpclient.jar"/>
 	<classpathentry kind="lib" path="lib/ivy/jar/httpcore.jar"/>
 	<classpathentry kind="lib" path="lib/ivy/jar/httpmime.jar"/>
+	<classpathentry kind="lib" path="lib/ivy/bundle/javax.json.jar" sourcepath="lib/ivy/source/javax.json.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
