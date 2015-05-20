@@ -91,7 +91,7 @@ public class RepositoryTask extends Task {
 	}
 
 	public void addConfiguredSPK(SPK spk) {
-		if ((spk.file == null && spk.get != null) || (spk.file != null && spk.file.exists() && spk.link != null)) {
+		if ((spk.file != null && spk.get != null) || (spk.file != null && spk.file.exists() && spk.link != null)) {
 			spks.add(spk);
 		} else {
 			throw new BuildException("Required attributes: [get, file] or [file, link]");
