@@ -162,6 +162,9 @@ public class RepositoryTask extends Task {
 
 			// make sure file is cached locally
 			if (useLink) {
+				if (!spk.file.exists()) {
+					spk.file.getParentFile().mkdirs();
+				}
 				Get get = new Get();
 				get.bindToOwner(this);
 				get.setUseTimestamp(true);
