@@ -1,15 +1,16 @@
 package net.filebot.ant.spk;
 
 import static java.util.Collections.*;
+import static net.filebot.ant.spk.PackageTask.*;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,6 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonWriter;
 import javax.json.stream.JsonGenerator;
 
-import static net.filebot.ant.spk.PackageTask.*;
 import net.filebot.ant.spk.PackageTask.Info;
 
 import org.apache.tools.ant.BuildException;
@@ -41,9 +41,14 @@ public class RepositoryTask extends Task {
 
 		File file;
 		URL link;
+		URL get;
 
 		public void setFile(File file) {
 			this.file = file;
+		}
+
+		public void setGet(URL get) {
+			this.get = get;
 		}
 
 		public void setLink(URL link) {
@@ -86,10 +91,11 @@ public class RepositoryTask extends Task {
 	}
 
 	public void addConfiguredSPK(SPK spk) {
-		if (spk.file == null || (spk.link == null && !spk.file.exists()))
-			throw new BuildException("Required attributes: file or link");
-
-		spks.add(spk);
+		if ((spk.file == null && spk.get != null) || (spk.file != null && spk.file.exists() && spk.link != null)) {
+			spks.add(spk);
+		} else {
+			throw new BuildException("Required attributes: [get, file] or [file, link]");
+		}
 	}
 
 	@Override
@@ -128,9 +134,11 @@ public class RepositoryTask extends Task {
 			jsonRoot.add("packages", jsonPackages);
 
 			log("Write Package Source: " + index);
-			try (JsonWriter writer = Json.createWriterFactory(singletonMap(JsonGenerator.PRETTY_PRINTING, true)).createWriter(new FileOutputStream(index))) {
+			StringWriter json = new StringWriter();
+			try (JsonWriter writer = Json.createWriterFactory(singletonMap(JsonGenerator.PRETTY_PRINTING, true)).createWriter(json)) {
 				writer.writeObject(jsonRoot.build());
 			}
+			Files.write(index.toPath(), json.toString().trim().getBytes(StandardCharsets.UTF_8));
 		} catch (IOException e) {
 			throw new BuildException(e);
 		}
@@ -155,20 +163,21 @@ public class RepositoryTask extends Task {
 		for (SPK spk : spks) {
 			log("Include SPK: " + spk.file.getName());
 
-			boolean useLink = spk.link != null && new URLResource(spk.link).isExists();
-			if (!useLink && !spk.file.exists()) {
-				throw new BuildException("Required resources: file or link");
-			}
-
 			// make sure file is cached locally
-			if (useLink) {
+			if (spk.get != null) {
+				log("Using " + spk.get);
 				if (!spk.file.exists()) {
 					spk.file.getParentFile().mkdirs();
 				}
+				if (spk.link == null) {
+					spk.link = spk.get;
+				}
+
 				Get get = new Get();
 				get.bindToOwner(this);
+				get.setQuiet(true);
 				get.setUseTimestamp(true);
-				get.setSrc(spk.link);
+				get.setSrc(spk.get);
 				get.setDest(spk.file);
 				get.execute();
 			} else {
@@ -210,9 +219,7 @@ public class RepositoryTask extends Task {
 			info.putAll(spk.infoList);
 
 			// automatically generate file size and checksum fields
-			if (spk.link != null) {
-				info.put("link", spk.link);
-			}
+			info.put("link", spk.link);
 			info.put("md5", md5(spk.file));
 			info.put("size", spk.file.length());
 

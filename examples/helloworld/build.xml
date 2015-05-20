@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Ant SPK Task" basedir="." default="spk" xmlns:syno="antlib:net.filebot.ant.spk">
 
+	<property name="package" value="helloworld" />
+	<property name="version" value="0.1" />
+
 	<target name="spk">
 
-		<syno:spk destdir="dist" name="helloworld" version="0.1" arch="noarch">
+		<syno:spk destdir="dist" name="${package}" version="${version}" arch="noarch">
 			<info name="displayname" value="Hello World" />
 			<info name="description" value="Hello World package built with ant-spk" />
 
@@ -27,7 +30,7 @@
 
 		<syno:package-source file="dist/spksrc.json">
 			<keyring file="gpg/alice.pub" />
-			<spk file="dist/helloworld-0.1-noarch.spk" link="http://www.example.org/files/helloworld-0.1-noarch.spk" />
+			<spk file="dist/${package}-${version}-noarch.spk" link="http://packages.example.org/${package}-${version}-noarch.spk" />
 		</syno:package-source>
 
 	</target>
