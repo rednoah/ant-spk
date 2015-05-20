@@ -25,10 +25,10 @@
 			<codesign keyid="D545C93D" pubring="gpg/pubring.gpg" secring="gpg/secring.gpg" password="" />
 		</syno:spk>
 
-		<syno:repo file="dist/spksrc.json">
+		<syno:package-source file="dist/spksrc.json">
 			<keyring file="gpg/alice.pub" />
 			<spk file="dist/helloworld-0.1-noarch.spk" link="http://www.example.org/files/helloworld-0.1-noarch.spk" />
-		</syno:repo>
+		</syno:package-source>
 
 	</target>
 
