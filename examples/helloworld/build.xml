@@ -30,7 +30,8 @@
 
 		<syno:package-source file="dist/spksrc.json">
 			<keyring file="gpg/alice.pub" />
-			<spk file="dist/${package}-${version}-noarch.spk" link="http://packages.example.org/${package}-${version}-noarch.spk">
+			<spk file="dist/${package}-${version}-noarch.spk">
+				<info name="link" value="http://packages.example.org/${package}-${version}-noarch.spk" />
 				<thumbnail url="http://images.example.org/${package}/thumbnail.png" />
 				<snapshot url="http://images.example.org/${package}/screenshot.png" />
 			</spk>

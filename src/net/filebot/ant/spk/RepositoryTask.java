@@ -40,19 +40,14 @@ public class RepositoryTask extends Task {
 	public static class SPK {
 
 		File file;
-		URL link;
-		URL get;
+		URL url;
 
 		public void setFile(File file) {
 			this.file = file;
 		}
 
-		public void setGet(URL get) {
-			this.get = get;
-		}
-
-		public void setLink(URL link) {
-			this.link = link;
+		public void setUrl(URL url) {
+			this.url = url;
 		}
 
 		Map<String, Object> infoList = new LinkedHashMap<String, Object>();
@@ -91,10 +86,10 @@ public class RepositoryTask extends Task {
 	}
 
 	public void addConfiguredSPK(SPK spk) {
-		if ((spk.file != null && spk.get != null) || (spk.file != null && spk.file.exists() && spk.link != null)) {
+		if ((spk.file != null && spk.url != null) || (spk.file != null && spk.file.exists())) {
 			spks.add(spk);
 		} else {
-			throw new BuildException("Required attributes: [get, file] or [file, link]");
+			throw new BuildException("Required attributes: [file] or [url, file]");
 		}
 	}
 
@@ -120,11 +115,13 @@ public class RepositoryTask extends Task {
 					} else if (v instanceof Number) {
 						jsonPackage.add(k, ((Number) v).longValue()); // Integer
 					} else if (v instanceof String[]) {
-						JsonArrayBuilder array = Json.createArrayBuilder();
+						JsonArrayBuilder array = Json.createArrayBuilder(); // String Array
 						for (String s : (String[]) v) {
 							array.add(s);
 						}
 						jsonPackage.add(k, array);
+					} else if (v == null) {
+						jsonPackage.addNull(k); // null
 					} else {
 						jsonPackage.add(k, v.toString()); // String
 					}
@@ -157,6 +154,12 @@ public class RepositoryTask extends Task {
 		return keys;
 	}
 
+	static final String LINK = "link";
+	static final String MD5 = "md5";
+	static final String SIZE = "size";
+	static final String THUMBNAIL = "thumbnail";
+	static final String SNAPSHOT = "snapshot";
+
 	public List<Map<String, Object>> getPackages() throws IOException {
 		List<Map<String, Object>> packages = new ArrayList<Map<String, Object>>();
 
@@ -164,20 +167,19 @@ public class RepositoryTask extends Task {
 			log("Include SPK: " + spk.file.getName());
 
 			// make sure file is cached locally
-			if (spk.get != null) {
-				log("Using " + spk.get);
+			if (spk.url != null) {
+				log("Using " + spk.url);
 				if (!spk.file.exists()) {
 					spk.file.getParentFile().mkdirs();
 				}
-				if (spk.link == null) {
-					spk.link = spk.get;
+				if (spk.url == null) {
+					spk.url = spk.url;
 				}
-
 				Get get = new Get();
 				get.bindToOwner(this);
 				get.setQuiet(true);
 				get.setUseTimestamp(true);
-				get.setSrc(spk.get);
+				get.setSrc(spk.url);
 				get.setDest(spk.file);
 				get.execute();
 			} else {
@@ -209,19 +211,21 @@ public class RepositoryTask extends Task {
 
 			// add thumbnails and snapshots
 			if (spk.thumbnail.size() > 0) {
-				info.put("thumbnail", spk.thumbnail.toArray(new String[0]));
+				info.put(THUMBNAIL, spk.thumbnail.toArray(new String[0]));
 			}
 			if (spk.snapshot.size() > 0) {
-				info.put("snapshot", spk.snapshot.toArray(new String[0]));
+				info.put(SNAPSHOT, spk.snapshot.toArray(new String[0]));
 			}
 
 			// add user-defined fields
 			info.putAll(spk.infoList);
 
 			// automatically generate file size and checksum fields
-			info.put("link", spk.link);
-			info.put("md5", md5(spk.file));
-			info.put("size", spk.file.length());
+			if (!info.containsKey(LINK)) {
+				info.put(LINK, spk.url);
+			}
+			info.put(MD5, md5(spk.file));
+			info.put(SIZE, spk.file.length());
 
 			packages.add(info);
 		}
