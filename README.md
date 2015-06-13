@@ -53,6 +53,11 @@ Downloads
 ---------
 The latest binaries are in the [release section](https://github.com/rednoah/ant-spk-task/releases).
 
+Dependencies
+------------
+**ant-spk** uses **Apache Ivy** for dependency management. Call `ant example` to fetch all dependencies and build the example project.
+
+If you just want to download the jars you can find them [here](https://github.com/filebot/filebot-node/tree/master/lib).
 
 Real World Examples
 -------------
