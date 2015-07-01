@@ -13,7 +13,7 @@ __Ant SPK Task__
 * Completely platform-agnostic so it works on Windows, Linux and Mac (and everything else that runs Java 8)
 * Supports passphrase protected GPG keychains
 
-Have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](http://usdl.synology.com/download/ds/userguide/Synology_DiskStation_Manager_3rd_Party_Apps_Developer_Guide.pdf) and read the **Package Structure** section to learn more on how SPK packages work.
+Have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](https://global.download.synology.com/download/Document/DeveloperGuide/DSM_Developer_Guide.pdf) and read the **Package Structure** section to learn more on how SPK packages work.
 
 Example
 -------
