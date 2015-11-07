@@ -41,7 +41,7 @@ Example
 			<package dir="app" includes="**/*.sh" filemode="755" />
 			<package dir="app" excludes="**/*.sh" />
 
-			<codesign keyid="D545C93D" pubring="gpg/pubring.gpg" secring="gpg/secring.gpg" password="" />
+			<codesign keyid="D545C93D" secring="gpg/secring.gpg" password="" />
 		</syno:spk>
 
 	</target>

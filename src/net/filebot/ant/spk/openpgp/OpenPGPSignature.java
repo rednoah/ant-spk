@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.security.Security;
 import java.security.SignatureException;
 
@@ -47,17 +46,15 @@ public class OpenPGPSignature {
 		signature.update(buffer, offset, length);
 	}
 
-	public void generate(OutputStream output, boolean asciiArmor) throws IOException, SignatureException, PGPException {
-		if (asciiArmor) {
-			output = new ArmoredOutputStream(output);
-		}
-		signature.generate().encode(new BCPGOutputStream(output));
-	}
+	public byte[] generate() throws IOException, SignatureException, PGPException {
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream(1024);
 
-	public byte[] generate(boolean asciiArmor) throws IOException, SignatureException, PGPException {
-		ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
-		generate(out, asciiArmor);
-		return out.toByteArray();
+		// make sure to call close() on these streams, because they will want to write some extra data at the end of the file
+		try (BCPGOutputStream out = new BCPGOutputStream(new ArmoredOutputStream(buffer))) {
+			signature.generate().encode(out);
+		}
+
+		return buffer.toByteArray();
 	}
 
 	public static OpenPGPSignature createSignatureGenerator(String keyId, File secring, char[] password) throws FileNotFoundException, IOException, PGPException {

@@ -5,18 +5,22 @@ import static net.filebot.ant.spk.PackageTask.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import net.filebot.ant.spk.openpgp.OpenPGPSignature;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -85,7 +89,7 @@ public class CodeSignTask extends Task {
 				}
 			}
 
-			asciiArmoredSignatureFile = signature.generate(true);
+			asciiArmoredSignatureFile = signature.generate();
 		} catch (IOException | SignatureException | PGPException e) {
 			throw new BuildException("Failed to compute PGP signature: " + e.getMessage());
 		}
@@ -96,14 +100,20 @@ public class CodeSignTask extends Task {
 		try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
 			HttpPost httpPost = new HttpPost(timestamp);
 
-			HttpEntity pastData = MultipartEntityBuilder.create().addBinaryBody("file", asciiArmoredSignatureFile).build();
+			// timestamp.synology.com requires the full Content-Disposition head to be sent, including the filename section, e.g. Content-Disposition: form-data; name="file"; filename="ALLCAT.dat.asc"
+			HttpEntity pastData = MultipartEntityBuilder.create().addBinaryBody("file", asciiArmoredSignatureFile, ContentType.DEFAULT_BINARY, UUID.randomUUID().toString()).build();
 			httpPost.setEntity(pastData);
 
 			HttpResponse response = httpClient.execute(httpPost);
 			Files.copy(response.getEntity().getContent(), token.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			dumpSignature(Files.readAllBytes(token.toPath()));
 		} catch (IOException e) {
 			throw new BuildException("Failed to retrieve signature: " + e.getMessage());
 		}
+	}
+
+	protected void dumpSignature(byte[] bytes) {
+		log(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(bytes)).toString());
 	}
 
 	protected Resource[] getTarOrderCatResources() {
