@@ -171,7 +171,10 @@ public class PackageTask extends Task {
 	private void prepareSignature(File tempDirectory) {
 		if (codesign != null) {
 			// select files that need to be signed
-			spkFiles.forEach(codesign::addConfiguredCat);
+			spkFiles.forEach((fs) -> {
+				fs.setProject(getProject());
+				codesign.addConfiguredCat(fs);
+			});
 
 			// create signature file
 			File signatureFile = new File(tempDirectory, SYNO_SIGNATURE);
