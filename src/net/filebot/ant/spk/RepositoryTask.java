@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -265,10 +266,18 @@ public class RepositoryTask extends Task {
 		case "silent_upgrade":
 			info.put("qupgrade", Project.toBoolean(value));
 			break;
-		case "thirdparty":
-			info.put(key, Project.toBoolean(value));
+		case "package_link_url":
+			info.put(LINK, value);
+			break;
+		case "package_thumbnail_url":
+			info.put(THUMBNAIL, URL_SEPARATOR.split(value));
+			break;
+		case "package_snapshot_url":
+			info.put(SNAPSHOT, URL_SEPARATOR.split(value));
 			break;
 		}
 	}
+
+	private final static Pattern URL_SEPARATOR = Pattern.compile("[, ]+");
 
 }
