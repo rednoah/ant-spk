@@ -12,13 +12,19 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
+import javax.json.JsonString;
+import javax.json.JsonValue;
 import javax.json.JsonWriter;
 import javax.json.stream.JsonGenerator;
 
@@ -71,8 +77,10 @@ public class RepositoryTask extends Task {
 	}
 
 	File index;
+
 	Union keyrings = new Union();
 	List<SPK> spks = new ArrayList<SPK>();
+	List<URLResource> sources = new ArrayList<URLResource>();
 
 	public void setFile(File file) {
 		this.index = file;
@@ -86,6 +94,10 @@ public class RepositoryTask extends Task {
 		keyrings.add(key);
 	}
 
+	public void addConfiguredSource(URLResource source) {
+		sources.add(source);
+	}
+
 	public void addConfiguredSPK(SPK spk) {
 		if ((spk.file != null && spk.url != null) || (spk.file != null && spk.file.exists())) {
 			spks.add(spk);
@@ -94,6 +106,9 @@ public class RepositoryTask extends Task {
 		}
 	}
 
+	static final String KEYRINGS = "keyrings";
+	static final String PACKAGES = "packages";
+
 	@Override
 	public void execute() throws BuildException {
 		if (index == null) {
@@ -101,12 +116,7 @@ public class RepositoryTask extends Task {
 		}
 
 		try {
-			JsonObjectBuilder jsonRoot = Json.createObjectBuilder();
-
-			JsonArrayBuilder jsonKeyrings = Json.createArrayBuilder();
-			getKeyRings().forEach(jsonKeyrings::add);
-			jsonRoot.add("keyrings", jsonKeyrings);
-
+			// generate package source for spk files
 			JsonArrayBuilder jsonPackages = Json.createArrayBuilder();
 			getPackages().forEach((p) -> {
 				JsonObjectBuilder jsonPackage = Json.createObjectBuilder();
@@ -129,7 +139,32 @@ public class RepositoryTask extends Task {
 				});
 				jsonPackages.add(jsonPackage);
 			});
-			jsonRoot.add("packages", jsonPackages);
+
+			// collect public keys and omit duplicates
+			Set<String> keyrings = new LinkedHashSet<String>();
+			keyrings.addAll(getKeyRings());
+
+			// include keyrings and packages from external package sources
+			for (URLResource source : sources) {
+				try (JsonReader reader = Json.createReader(source.getInputStream())) {
+					JsonObject json = reader.readObject();
+					for (JsonValue p : json.getJsonArray(PACKAGES)) {
+						jsonPackages.add(p);
+					}
+					for (JsonValue k : json.getJsonArray(KEYRINGS)) {
+						keyrings.add(((JsonString) k).getString());
+					}
+				} catch (Exception e) {
+					throw new BuildException(e);
+				}
+			}
+
+			JsonArrayBuilder jsonKeyrings = Json.createArrayBuilder();
+			keyrings.forEach(jsonKeyrings::add);
+
+			JsonObjectBuilder jsonRoot = Json.createObjectBuilder();
+			jsonRoot.add(KEYRINGS, jsonKeyrings);
+			jsonRoot.add(PACKAGES, jsonPackages);
 
 			log("Write Package Source: " + index);
 			StringWriter json = new StringWriter();
@@ -151,7 +186,6 @@ public class RepositoryTask extends Task {
 				keys.add(key);
 			}
 		}
-
 		return keys;
 	}
 
