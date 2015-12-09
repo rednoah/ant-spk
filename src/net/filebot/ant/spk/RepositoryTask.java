@@ -152,7 +152,7 @@ public class RepositoryTask extends Task {
 						jsonPackages.add(p);
 					}
 					for (JsonValue k : json.getJsonArray(KEYRINGS)) {
-						keyrings.add(((JsonString) k).getString());
+						keyrings.add(normalizeKey(((JsonString) k).getString()));
 					}
 				} catch (Exception e) {
 					throw new BuildException(e);
@@ -183,10 +183,17 @@ public class RepositoryTask extends Task {
 			log("Include keyring: " + resource.getName());
 			String key = FileUtils.readFully(new InputStreamReader(resource.getInputStream(), StandardCharsets.US_ASCII));
 			if (key != null) {
-				keys.add(key);
+				keys.add(normalizeKey(key)); // make sure to normalize line endings
 			}
 		}
 		return keys;
+	}
+
+	private static final Pattern NEWLINE = Pattern.compile("\\R");
+	private static final String UNIX_NEWLINE = "\n";
+
+	private String normalizeKey(String key) {
+		return NEWLINE.matcher(key).replaceAll(UNIX_NEWLINE).trim();
 	}
 
 	static final String LINK = "link";
@@ -231,7 +238,7 @@ public class RepositoryTask extends Task {
 			for (Resource resource : tar) {
 				if (INFO.equals(resource.getName())) {
 					String text = FileUtils.readFully(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8));
-					for (String line : text.split("\\R")) {
+					for (String line : NEWLINE.split(text)) {
 						String[] s = line.split("=", 2);
 						if (s.length == 2) {
 							if (s[1].startsWith("\"") && s[1].endsWith("\"")) {
@@ -312,6 +319,6 @@ public class RepositoryTask extends Task {
 		}
 	}
 
-	private final static Pattern URL_SEPARATOR = Pattern.compile("[, ]+");
+	private static final Pattern URL_SEPARATOR = Pattern.compile("[, ]+");
 
 }
