@@ -148,11 +148,13 @@ public class RepositoryTask extends Task {
 			for (URLResource source : sources) {
 				try (JsonReader reader = Json.createReader(source.getInputStream())) {
 					JsonObject json = reader.readObject();
-					for (JsonValue p : json.getJsonArray(PACKAGES)) {
-						jsonPackages.add(p);
-					}
 					for (JsonValue k : json.getJsonArray(KEYRINGS)) {
+						log("Import keyring: " + source);
 						keyrings.add(normalizeKey(((JsonString) k).getString()));
+					}
+					for (JsonValue p : json.getJsonArray(PACKAGES)) {
+						log("Import package: " + (((JsonString) ((JsonObject) p).get(PACKAGE))).getString());
+						jsonPackages.add(p);
 					}
 				} catch (Exception e) {
 					throw new BuildException(e);
@@ -195,6 +197,9 @@ public class RepositoryTask extends Task {
 	private String normalizeKey(String key) {
 		return NEWLINE.matcher(key).replaceAll(UNIX_NEWLINE).trim();
 	}
+
+	static final String PACKAGE = "package";
+	static final String VERSION = "version";
 
 	static final String LINK = "link";
 	static final String MD5 = "md5";
