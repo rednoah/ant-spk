@@ -61,4 +61,4 @@ If you just want to download the jars you can find them [here](https://github.co
 
 Real World Examples
 -------------
-**ant-spk** is used to automatically build **.spk** packages for the [FileBot](http://www.filebot.net/) project, so check out `filebot` [build.xml](http://sourceforge.net/p/filebot/code/HEAD/tree/trunk/build.xml) or `filebot-node` [build.xml](https://github.com/filebot/filebot-node/blob/master/build.xml) or `java-installer` [build.xml](https://github.com/rednoah/java-installer/blob/master/build.xml) for a more comprehensive examples. 🚀
+**ant-spk** is used to automatically build **.spk** packages for the [FileBot](http://www.filebot.net/) project, so check out `filebot` [build.xml](http://sourceforge.net/p/filebot/code/HEAD/tree/trunk/build.xml) or `filebot-node` [build.xml](https://github.com/filebot/filebot-node/blob/master/build.xml) or `java-installer` [build.xml](https://github.com/rednoah/java-installer/blob/master/build.xml) or `ant-installer` [build.xml](https://github.com/rednoah/ant-installer/blob/master/build.xml) for a set of more comprehensive examples. 🚀
