@@ -28,8 +28,6 @@ import javax.json.JsonValue;
 import javax.json.JsonWriter;
 import javax.json.stream.JsonGenerator;
 
-import net.filebot.ant.spk.PackageTask.Info;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
@@ -41,6 +39,8 @@ import org.apache.tools.ant.types.TarFileSet;
 import org.apache.tools.ant.types.resources.URLResource;
 import org.apache.tools.ant.types.resources.Union;
 import org.apache.tools.ant.util.FileUtils;
+
+import net.filebot.ant.spk.PackageTask.Info;
 
 public class RepositoryTask extends Task {
 
@@ -99,11 +99,14 @@ public class RepositoryTask extends Task {
 	}
 
 	public void addConfiguredSPK(SPK spk) {
-		if ((spk.file != null && spk.url != null) || (spk.file != null && spk.file.exists())) {
-			spks.add(spk);
-		} else {
-			throw new BuildException("Required attributes: [file] or [url, file]");
+		if (spk.file != null) {
+			if (spk.url != null || spk.file.exists()) {
+				spks.add(spk);
+			}
+			throw new BuildException("File not found: " + spk.file);
 		}
+
+		throw new BuildException("Required attributes: [file] or [url, file]");
 	}
 
 	static final String KEYRINGS = "keyrings";
