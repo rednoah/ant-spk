@@ -4,7 +4,7 @@
 			"type": "legacy",
 			"title": "Hello World",
 			"icon": "images/icon_{0}.png",
-			"url": "3rdparty/helloworld/index.html"
+			"url": "/webman/3rdparty/helloworld/index.html"
 		}
 	}
 }
