@@ -51,7 +51,9 @@ Example
 
 Downloads
 ---------
-The latest binaries are in the [release section](https://github.com/rednoah/ant-spk-task/releases).
+The latest binaries are in the [release section](https://github.com/rednoah/ant-spk-task/releases). 
+
+[![Github Releases](https://img.shields.io/github/downloads/rednoah/ant-spk/total.svg)](https://github.com/rednoah/ant-spk-task/releases)
 
 Dependencies
 ------------
