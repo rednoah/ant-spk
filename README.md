@@ -1,10 +1,10 @@
-ant-spk
-============
+# ant-spk
+[![Github Releases](https://img.shields.io/github/downloads/rednoah/ant-spk/total.svg)](https://github.com/rednoah/ant-spk/releases)
+[![GitHub release](https://img.shields.io/github/release/rednoah/ant-spk.svg)](https://github.com/rednoah/ant-spk/releases)
 
 Ant Task for creating SPK packages for Synology NAS.
 
-Introduction
-------------
+## Introduction
 I've found the Synology SDK tools for creating and signing SPK packages overly difficult to use and and terrible to automate. So here's an Apache Ant task to handle build automation of SPK packages in an easy to maintain and completely platform-independent manner.
 
 __Ant SPK Task__
@@ -15,8 +15,7 @@ __Ant SPK Task__
 
 Have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](https://global.download.synology.com/download/Document/DeveloperGuide/DSM_Developer_Guide.pdf) and read the **Package Structure** section to learn more on how SPK packages work.
 
-Example
--------
+## Example
 ```xml
 <project name="Ant SPK Task" basedir="." default="spk" xmlns:syno="antlib:net.filebot.ant.spk">
 
@@ -49,18 +48,13 @@ Example
 </project>
 ```
 
-Downloads
----------
+## Downloads
 The latest binaries are in the [release section](https://github.com/rednoah/ant-spk-task/releases). 
 
-[![Github Releases](https://img.shields.io/github/downloads/rednoah/ant-spk/total.svg)](https://github.com/rednoah/ant-spk-task/releases)
-
-Dependencies
-------------
+## Dependencies
 **ant-spk** uses **Apache Ivy** for dependency management. Call `ant example` to fetch all dependencies and build the example project.
 
 If you just want to download the jars you can find them [here](https://github.com/filebot/filebot-node/tree/master/lib).
 
-Real World Examples
--------------
+## Real World Examples
 **ant-spk** is used to automatically build **.spk** packages for the [FileBot](http://www.filebot.net/) project, so check out `filebot` [build.xml](http://sourceforge.net/p/filebot/code/HEAD/tree/trunk/build.xml) or `filebot-node` [build.xml](https://github.com/filebot/filebot-node/blob/master/build.xml) or `java-installer` [build.xml](https://github.com/rednoah/java-installer/blob/master/build.xml) or `ant-installer` [build.xml](https://github.com/rednoah/ant-installer/blob/master/build.xml) for a set of more comprehensive examples. 🚀
