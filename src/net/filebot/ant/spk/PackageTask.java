@@ -1,11 +1,10 @@
 package net.filebot.ant.spk;
 
+import static net.filebot.ant.spk.Digest.*;
+
 import java.io.File;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.nio.file.Files;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -52,7 +51,7 @@ public class PackageTask extends Task {
 				case "72":
 					return "PACKAGE_ICON.PNG";
 				default:
-					return String.format("PACKAGE_ICON_%s.PNG", value);
+					return "PACKAGE_ICON_" + value + ".PNG";
 				}
 			}
 		}
@@ -260,16 +259,6 @@ public class PackageTask extends Task {
 		cleanupTask.setLocation(getLocation());
 		cleanupTask.setDir(tempDirectory);
 		cleanupTask.perform();
-	}
-
-	static String md5(File file) {
-		try {
-			MessageDigest hash = MessageDigest.getInstance("MD5");
-			hash.update(Files.readAllBytes(file.toPath()));
-			return String.format("%032x", new BigInteger(1, hash.digest())); // as hex string
-		} catch (IOException | NoSuchAlgorithmException e) {
-			throw new BuildException(e);
-		}
 	}
 
 }

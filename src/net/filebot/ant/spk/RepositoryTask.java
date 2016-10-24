@@ -1,6 +1,7 @@
 package net.filebot.ant.spk;
 
 import static java.util.Collections.*;
+import static net.filebot.ant.spk.Digest.*;
 import static net.filebot.ant.spk.PackageTask.*;
 
 import java.io.File;
@@ -206,6 +207,7 @@ public class RepositoryTask extends Task {
 
 	static final String LINK = "link";
 	static final String MD5 = "md5";
+	static final String SHA256 = "sha256"; // NOT SUPPORTED BY SYNOLOGY DSM
 	static final String SIZE = "size";
 	static final String THUMBNAIL = "thumbnail";
 	static final String SNAPSHOT = "snapshot";
@@ -274,7 +276,9 @@ public class RepositoryTask extends Task {
 			if (!info.containsKey(LINK)) {
 				info.put(LINK, spk.url);
 			}
+
 			info.put(MD5, md5(spk.file));
+			info.put(SHA256, sha256(spk.file));
 			info.put(SIZE, spk.file.length());
 
 			packages.add(info);
