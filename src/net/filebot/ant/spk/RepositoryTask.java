@@ -1,14 +1,13 @@
 package net.filebot.ant.spk;
 
 import static java.util.Collections.*;
-import static net.filebot.ant.spk.Digest.*;
 import static net.filebot.ant.spk.PackageTask.*;
+import static net.filebot.ant.spk.util.Digest.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -41,41 +40,7 @@ import org.apache.tools.ant.types.resources.URLResource;
 import org.apache.tools.ant.types.resources.Union;
 import org.apache.tools.ant.util.FileUtils;
 
-import net.filebot.ant.spk.PackageTask.Info;
-
 public class RepositoryTask extends Task {
-
-	public static class SPK {
-
-		File file;
-		URL url;
-
-		public void setFile(File file) {
-			this.file = file;
-		}
-
-		public void setUrl(URL url) {
-			this.url = url;
-		}
-
-		Map<String, Object> infoList = new LinkedHashMap<String, Object>();
-
-		public void addConfiguredInfo(Info info) {
-			infoList.put(info.name, info.value);
-		}
-
-		List<String> thumbnail = new ArrayList<String>();
-		List<String> snapshot = new ArrayList<String>();
-
-		public void addConfiguredThumbnail(URLResource link) {
-			thumbnail.add(link.getURL().toString());
-		}
-
-		public void addConfiguredSnapshot(URLResource link) {
-			snapshot.add(link.getURL().toString());
-		}
-
-	}
 
 	File index;
 

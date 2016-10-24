@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import net.filebot.ant.spk.openpgp.OpenPGPSignature;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -30,9 +28,9 @@ import org.apache.tools.ant.taskdefs.Tar.TarFileSet;
 import org.apache.tools.ant.types.Resource;
 import org.bouncycastle.openpgp.PGPException;
 
-public class CodeSignTask extends Task {
+import net.filebot.ant.spk.openpgp.OpenPGPSignature;
 
-	private static final int BUFFER_SIZE = 64 * 1024;
+public class CodeSignTask extends Task {
 
 	String keyId;
 	File secring;
@@ -56,7 +54,6 @@ public class CodeSignTask extends Task {
 		this.timestamp = timestamp;
 	}
 
-	// internal properties
 	File token = new File(SYNO_SIGNATURE);
 	List<TarFileSet> cats = new ArrayList<TarFileSet>();
 
@@ -79,7 +76,7 @@ public class CodeSignTask extends Task {
 			OpenPGPSignature signature = OpenPGPSignature.createSignatureGenerator(keyId, secring, password);
 
 			// cat files in case-sensitive alphabetical tar entry path order
-			byte[] buffer = new byte[BUFFER_SIZE];
+			byte[] buffer = new byte[64 * 1024];
 			int length = 0;
 			for (Resource r : getTarOrderCatResources()) {
 				try (InputStream in = r.getInputStream()) {

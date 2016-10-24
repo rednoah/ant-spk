@@ -1,8 +1,10 @@
 package net.filebot.ant.spk;
 
-import static net.filebot.ant.spk.Digest.*;
+import static net.filebot.ant.spk.Info.*;
+import static net.filebot.ant.spk.util.Digest.*;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -18,73 +20,32 @@ import org.apache.tools.ant.taskdefs.Tar;
 import org.apache.tools.ant.taskdefs.Tar.TarCompressionMethod;
 import org.apache.tools.ant.taskdefs.Tar.TarFileSet;
 import org.apache.tools.ant.taskdefs.Tar.TarLongFileMode;
-import org.apache.tools.ant.types.EnumeratedAttribute;
 import org.apache.tools.ant.types.FileSet;
+import org.tukaani.xz.LZMA2Options;
+import org.tukaani.xz.XZOutputStream;
 
 public class PackageTask extends Task {
 
-	public static class Info {
-
-		String name;
-		String value;
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public void setValue(String value) {
-			this.value = value;
-		}
-	}
-
-	public static class Icon {
-
-		public static class Size extends EnumeratedAttribute {
-
-			@Override
-			public String[] getValues() {
-				return new String[] { "72", "256" };
-			}
-
-			public String getFileName() {
-				switch (value) {
-				case "72":
-					return "PACKAGE_ICON.PNG";
-				default:
-					return "PACKAGE_ICON_" + value + ".PNG";
-				}
-			}
-		}
-
-		Size size;
-		File file;
-
-		public void setSize(Size size) {
-			this.size = size;
-		}
-
-		public void setFile(File file) {
-			this.file = file;
-		}
-	}
-
-	static final String INFO = "INFO";
-	static final String SYNO_SIGNATURE = "syno_signature.asc";
-
-	static final String NAME = "package";
-	static final String VERSION = "version";
-	static final String ARCH = "arch";
+	public static final String INFO = "INFO";
+	public static final String SYNO_SIGNATURE = "syno_signature.asc";
 
 	File destDir;
+
 	Map<String, String> infoList = new LinkedHashMap<String, String>();
 
 	List<TarFileSet> packageFiles = new ArrayList<TarFileSet>();
 	List<TarFileSet> spkFiles = new ArrayList<TarFileSet>();
 
+	Compression compression = Compression.gzip; // use GZIP by default, XZ requires DSM 6 or higher
+
 	CodeSignTask codesign;
 
 	public void setDestdir(File value) {
 		destDir = value;
+	}
+
+	public void setCompression(Compression value) {
+		compression = value;
 	}
 
 	public void setName(String value) {
@@ -161,7 +122,8 @@ public class PackageTask extends Task {
 		prepareInfo(spkStaging);
 		prepareSignature(spkStaging);
 
-		tar(spkFile, false, spkFiles);
+		// spk must be an uncompressed tar
+		tar(spkFile, null, spkFiles);
 
 		// make sure staging folder is clean for next time
 		clean(spkStaging);
@@ -192,7 +154,7 @@ public class PackageTask extends Task {
 
 	private void preparePackage(File tempDirectory) {
 		File packageFile = new File(tempDirectory, "package.tgz");
-		tar(packageFile, true, packageFiles);
+		tar(packageFile, compression, packageFiles);
 
 		infoList.put("checksum", md5(packageFile));
 
@@ -222,7 +184,7 @@ public class PackageTask extends Task {
 		spkFiles.add(info);
 	}
 
-	private void tar(File destFile, boolean gzip, List<TarFileSet> files) {
+	private void tar(File destFile, Compression compression, List<TarFileSet> files) {
 		Tar tar = new Tar();
 		tar.setProject(getProject());
 		tar.setLocation(getLocation());
@@ -233,7 +195,7 @@ public class PackageTask extends Task {
 		gnuLongFileMode.setValue("gnu");
 		tar.setLongfile(gnuLongFileMode);
 
-		if (gzip) {
+		if (compression == Compression.gzip) {
 			TarCompressionMethod gzipCompression = new TarCompressionMethod();
 			gzipCompression.setValue("gzip");
 			tar.setCompression(gzipCompression);
@@ -250,6 +212,20 @@ public class PackageTask extends Task {
 		}
 
 		tar.perform();
+
+		// ant tar does not support xz compression so we need to do it yourself
+		if (compression == Compression.xz) {
+			try {
+				log("xz: " + destFile);
+				byte[] uncompressedTar = Files.readAllBytes(destFile.toPath());
+
+				try (XZOutputStream xz = new XZOutputStream(new FileOutputStream(destFile), new LZMA2Options(LZMA2Options.PRESET_DEFAULT))) {
+					xz.write(uncompressedTar);
+				}
+			} catch (Exception e) {
+				throw new BuildException("xz: " + e);
+			}
+		}
 	}
 
 	private void clean(File tempDirectory) {

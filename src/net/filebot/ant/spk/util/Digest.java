@@ -1,4 +1,4 @@
-package net.filebot.ant.spk;
+package net.filebot.ant.spk.util;
 
 import java.io.File;
 import java.math.BigInteger;
@@ -7,7 +7,7 @@ import java.security.MessageDigest;
 
 import org.apache.tools.ant.BuildException;
 
-class Digest {
+public class Digest {
 
 	public static String md5(File file) {
 		return digest(file, "MD5");
