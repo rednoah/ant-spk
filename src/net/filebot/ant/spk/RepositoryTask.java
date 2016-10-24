@@ -100,11 +100,11 @@ public class RepositoryTask extends Task {
 	}
 
 	public void addConfiguredSPK(SPK spk) {
-		if ((spk.file != null && spk.url != null) || (spk.file != null && spk.file.exists())) {
-			spks.add(spk);
-		} else {
+		if (spk.file == null) {
 			throw new BuildException("Required attributes: [file] or [url, file]");
 		}
+
+		spks.add(spk);
 	}
 
 	public static final String KEYRINGS = "keyrings";
