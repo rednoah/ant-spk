@@ -100,18 +100,15 @@ public class RepositoryTask extends Task {
 	}
 
 	public void addConfiguredSPK(SPK spk) {
-		if (spk.file != null) {
-			if (spk.url != null || spk.file.exists()) {
-				spks.add(spk);
-			}
-			throw new BuildException("File not found: " + spk.file);
+		if ((spk.file != null && spk.url != null) || (spk.file != null && spk.file.exists())) {
+			spks.add(spk);
+		} else {
+			throw new BuildException("Required attributes: [file] or [url, file]");
 		}
-
-		throw new BuildException("Required attributes: [file] or [url, file]");
 	}
 
-	static final String KEYRINGS = "keyrings";
-	static final String PACKAGES = "packages";
+	public static final String KEYRINGS = "keyrings";
+	public static final String PACKAGES = "packages";
 
 	@Override
 	public void execute() throws BuildException {
@@ -202,15 +199,15 @@ public class RepositoryTask extends Task {
 		return NEWLINE.matcher(key).replaceAll(UNIX_NEWLINE).trim();
 	}
 
-	static final String PACKAGE = "package";
-	static final String VERSION = "version";
+	public static final String PACKAGE = "package";
+	public static final String VERSION = "version";
 
-	static final String LINK = "link";
-	static final String MD5 = "md5";
-	static final String SHA256 = "sha256"; // NOT SUPPORTED BY SYNOLOGY DSM
-	static final String SIZE = "size";
-	static final String THUMBNAIL = "thumbnail";
-	static final String SNAPSHOT = "snapshot";
+	public static final String LINK = "link";
+	public static final String MD5 = "md5";
+	public static final String SHA256 = "sha256"; // NOT SUPPORTED BY SYNOLOGY DSM
+	public static final String SIZE = "size";
+	public static final String THUMBNAIL = "thumbnail";
+	public static final String SNAPSHOT = "snapshot";
 
 	public List<Map<String, Object>> getPackages() throws IOException {
 		List<Map<String, Object>> packages = new ArrayList<Map<String, Object>>();
