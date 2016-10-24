@@ -228,6 +228,7 @@ public class PackageTask extends Task {
 		tar.setProject(getProject());
 		tar.setLocation(getLocation());
 		tar.setTaskName(getTaskName());
+		tar.setEncoding("utf-8");
 
 		TarLongFileMode gnuLongFileMode = new TarLongFileMode();
 		gnuLongFileMode.setValue("gnu");
