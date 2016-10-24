@@ -91,7 +91,7 @@ public class CodeSignTask extends Task {
 
 			asciiArmoredSignatureFile = signature.generate();
 		} catch (IOException | SignatureException | PGPException e) {
-			throw new BuildException("Failed to compute PGP signature: " + e.getMessage());
+			throw new BuildException("Failed to compute PGP signature: " + e);
 		}
 
 		// sign the signature
@@ -127,8 +127,9 @@ public class CodeSignTask extends Task {
 	}
 
 	protected String getTarEntryName(String vPath, TarFileSet tarFileSet) {
-		if (vPath.isEmpty() || vPath.startsWith("/"))
+		if (vPath.isEmpty() || vPath.startsWith("/")) {
 			throw new IllegalArgumentException("Illegal tar entry: " + vPath);
+		}
 
 		String fullpath = tarFileSet.getFullpath(getProject());
 		if (fullpath.length() > 0) {
