@@ -54,9 +54,8 @@ The latest binaries are in the [release section](https://github.com/rednoah/ant-
 <dependency org="net.filebot" name="ant-spk" rev="0.+" />
 ```
 
-## Dependencies
-[ant-spk](https://github.com/rednoah/ant-spk) uses [Apache Ivy](http://ant.apache.org/ivy/) for dependency management. Call `ant example` to fetch all dependencies and build the example project.
-
+## Build
+[ant-spk](https://github.com/rednoah/ant-spk) uses the [Gradle](https://gradle.org/gradle-download/) build tool. Call `gradle example` to fetch all dependencies and build the example project.
 
 ## Real World Examples
 [ant-spk](https://github.com/rednoah/ant-spk) is used to automatically build `.spk` packages for the [FileBot](http://www.filebot.net/) project, so check out [filebot](http://www.filebot.net/) [build.xml](https://github.com/filebot/filebot/blob/master/build.xml) or [filebot-node](https://github.com/filebot/filebot-node) [build.xml](https://github.com/filebot/filebot-node/blob/master/build.xml) or [java-installer](https://github.com/rednoah/java-installer) [build.xml](https://github.com/rednoah/java-installer/blob/master/build.xml) or [ant-installer](https://github.com/rednoah/ant-installer) [build.xml](https://github.com/rednoah/ant-installer/blob/master/build.xml) for a set of more comprehensive examples. 🚀
