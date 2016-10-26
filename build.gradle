@@ -21,15 +21,21 @@ task sourcesJar(type: Jar) {
 	from sourceSets.main.allSource
 }
 
-artifacts { archives javadocJar, sourcesJar }
+artifacts {
+	archives javadocJar, sourcesJar
+}
 
 if (project.hasProperty('signing.keyId')) {
-	signing { sign configurations.archives }
+	signing {
+		sign configurations.archives
+	}
 }
 
 
 
-repositories { mavenCentral() }
+repositories {
+	mavenCentral()
+}
 
 dependencies {
 	compileOnly 'org.apache.ant:ant:1.9.7'
@@ -91,6 +97,7 @@ if (project.hasProperty('ossrhUsername')) {
 		}
 	}
 }
+
 
 
 task example(type: Exec, dependsOn: build) {
