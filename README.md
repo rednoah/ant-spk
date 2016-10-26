@@ -49,12 +49,14 @@ Have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](https://
 ```
 
 ## Downloads
-The latest binaries are in the [release section](https://github.com/rednoah/ant-spk-task/releases). 
+The latest binaries are in the [release section](https://github.com/rednoah/ant-spk-task/releases). [ant-spk](https://github.com/rednoah/ant-spk) is available on available on [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22ant-spk%22). Use [Apache Ivy](http://ant.apache.org/ivy/) to retrieve all the dependencies:
+```xml
+<dependency org="net.filebot" name="ant-spk" rev="0.+" />
+```
 
 ## Dependencies
-**ant-spk** uses **Apache Ivy** for dependency management. Call `ant example` to fetch all dependencies and build the example project.
+[ant-spk](https://github.com/rednoah/ant-spk) uses [Apache Ivy](http://ant.apache.org/ivy/) for dependency management. Call `ant example` to fetch all dependencies and build the example project.
 
-If you just want to download the jars you can find them [here](https://github.com/filebot/filebot-node/tree/master/lib).
 
 ## Real World Examples
-**ant-spk** is used to automatically build **.spk** packages for the [FileBot](http://www.filebot.net/) project, so check out `filebot` [build.xml](https://github.com/filebot/filebot/blob/master/build.xml) or `filebot-node` [build.xml](https://github.com/filebot/filebot-node/blob/master/build.xml) or `java-installer` [build.xml](https://github.com/rednoah/java-installer/blob/master/build.xml) or `ant-installer` [build.xml](https://github.com/rednoah/ant-installer/blob/master/build.xml) for a set of more comprehensive examples. 🚀
+[ant-spk](https://github.com/rednoah/ant-spk) is used to automatically build `.spk` packages for the [FileBot](http://www.filebot.net/) project, so check out [filebot](http://www.filebot.net/) [build.xml](https://github.com/filebot/filebot/blob/master/build.xml) or [filebot-node](https://github.com/filebot/filebot-node) [build.xml](https://github.com/filebot/filebot-node/blob/master/build.xml) or [java-installer](https://github.com/rednoah/java-installer) [build.xml](https://github.com/rednoah/java-installer/blob/master/build.xml) or [ant-installer](https://github.com/rednoah/ant-installer) [build.xml](https://github.com/rednoah/ant-installer/blob/master/build.xml) for a set of more comprehensive examples. 🚀
