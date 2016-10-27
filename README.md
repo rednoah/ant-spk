@@ -10,7 +10,7 @@ I've found the Synology SDK tools for creating and signing SPK packages overly d
 __Ant SPK Task__
 * Much more easy to use than whats in the official Synology SDK docs & tools
 * Automatically create and sign your SPK packages in your automated Ant build
-* Completely platform-agnostic so it works on Windows, Linux and Mac (and everything else that runs Java 8)
+* Works on Windows, Mac and Linux (including Synology DSM) on any device that runs Java 8
 * Supports passphrase protected GPG keychains
 
 Have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](https://global.download.synology.com/download/Document/DeveloperGuide/DSM_Developer_Guide.pdf) and read the **Package Structure** section to learn more on how SPK packages work.
