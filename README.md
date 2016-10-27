@@ -49,7 +49,7 @@ Have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](https://
 ```
 
 ## Downloads
-[ant-spk](https://github.com/rednoah/ant-spk) is available on available on [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22ant-spk%22). Use [Apache Ivy](http://ant.apache.org/ivy/) to retrieve all the dependencies:
+[ant-spk](https://github.com/rednoah/ant-spk) is available on available on [Maven Central](https://mvnrepository.com/artifact/net.filebot/ant-spk). Use [Apache Ivy](http://ant.apache.org/ivy/) to retrieve all the dependencies:
 ```xml
 <dependency org="net.filebot" name="ant-spk" rev="0.+" />
 ```
