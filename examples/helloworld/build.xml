@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Ant SPK Task" basedir="." default="spk" xmlns:syno="antlib:net.filebot.ant.spk">
+<project name="Ant SPK Task" basedir="." default="spk" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:syno="antlib:net.filebot.ant.spk">
 
 	<property name="package" value="helloworld" />
 	<property name="version" value="0.1" />
 
-	<target name="spk">
-
+	<target name="spk" description="Build SPK package">
 		<syno:spk destdir="dist" name="${package}" version="${version}" arch="noarch">
 			<info name="displayname" value="Hello World" />
 			<info name="description" value="Hello World package built with ant-spk" />
@@ -36,7 +35,10 @@
 				<snapshot url="http://images.example.org/${package}/screenshot.png" />
 			</spk>
 		</syno:package-source>
+	</target>
 
+	<target name="retrieve" description="Retrieve dependencies with Apache Ivy">
+		<ivy:retrieve pattern="lib/[artifact]-[type].[ext]" />
 	</target>
 
 </project>
