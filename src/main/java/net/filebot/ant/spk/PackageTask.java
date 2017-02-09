@@ -4,7 +4,6 @@ import static net.filebot.ant.spk.Info.*;
 import static net.filebot.ant.spk.util.Digest.*;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -17,12 +16,9 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Delete;
 import org.apache.tools.ant.taskdefs.Tar;
-import org.apache.tools.ant.taskdefs.Tar.TarCompressionMethod;
 import org.apache.tools.ant.taskdefs.Tar.TarFileSet;
 import org.apache.tools.ant.taskdefs.Tar.TarLongFileMode;
 import org.apache.tools.ant.types.FileSet;
-import org.tukaani.xz.LZMA2Options;
-import org.tukaani.xz.XZOutputStream;
 
 public class PackageTask extends Task {
 
@@ -123,7 +119,7 @@ public class PackageTask extends Task {
 		prepareSignature(spkStaging);
 
 		// spk must be an uncompressed tar
-		tar(spkFile, null, spkFiles);
+		tar(spkFile, Compression.none, spkFiles);
 
 		// make sure staging folder is clean for next time
 		clean(spkStaging);
@@ -191,15 +187,11 @@ public class PackageTask extends Task {
 		tar.setTaskName(getTaskName());
 		tar.setEncoding("utf-8");
 
-		TarLongFileMode gnuLongFileMode = new TarLongFileMode();
-		gnuLongFileMode.setValue("gnu");
-		tar.setLongfile(gnuLongFileMode);
+		TarLongFileMode longFileMode = new TarLongFileMode();
+		longFileMode.setValue("posix");
+		tar.setLongfile(longFileMode);
 
-		if (compression == Compression.gzip) {
-			TarCompressionMethod gzipCompression = new TarCompressionMethod();
-			gzipCompression.setValue("gzip");
-			tar.setCompression(gzipCompression);
-		}
+		tar.setCompression(compression.getTarCompressionMethod());
 
 		tar.setDestFile(destFile);
 		for (FileSet fileset : files) {
@@ -212,20 +204,6 @@ public class PackageTask extends Task {
 		}
 
 		tar.perform();
-
-		// ant tar does not support xz compression so we need to do it yourself
-		if (compression == Compression.xz) {
-			try {
-				log("xz: " + destFile);
-				byte[] uncompressedTar = Files.readAllBytes(destFile.toPath());
-
-				try (XZOutputStream xz = new XZOutputStream(new FileOutputStream(destFile), new LZMA2Options(LZMA2Options.PRESET_DEFAULT))) {
-					xz.write(uncompressedTar);
-				}
-			} catch (Exception e) {
-				throw new BuildException("xz: " + e);
-			}
-		}
 	}
 
 	private void clean(File tempDirectory) {

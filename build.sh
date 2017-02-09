@@ -1,2 +1,2 @@
 #/bin/sh
-gradle build example
+gradle clean build example

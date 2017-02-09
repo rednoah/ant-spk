@@ -5,7 +5,7 @@
 	<property name="version" value="0.1" />
 
 	<target name="spk" description="Build SPK package">
-		<syno:spk destdir="dist" name="${package}" version="${version}" arch="noarch">
+		<syno:spk destdir="dist" name="${package}" version="${version}" arch="noarch" compression="xz">
 			<info name="displayname" value="Hello World" />
 			<info name="description" value="Hello World package built with ant-spk" />
 

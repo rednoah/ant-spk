@@ -7,7 +7,7 @@ apply plugin: 'signing'
 
 group = 'net.filebot'
 archivesBaseName = 'ant-spk'
-version = '0.5'
+version = '0.6'
 
 
 
@@ -38,14 +38,13 @@ repositories {
 }
 
 dependencies {
-	compileOnly 'org.apache.ant:ant:1.9.7'
-	compile 'org.bouncycastle:bcprov-jdk15on:1.55'
-	compile 'org.bouncycastle:bcpg-jdk15on:1.55'
-	compile 'org.apache.httpcomponents:httpcore:4.4.5'
+	compileOnly 'org.apache.ant:ant:1.10.1'
+	compile 'org.bouncycastle:bcprov-jdk15on:1.56'
+	compile 'org.bouncycastle:bcpg-jdk15on:1.56'
+	compile 'org.apache.httpcomponents:httpcore:4.4.6'
 	compile 'org.apache.httpcomponents:httpmime:4.5.2'
 	compile 'org.apache.httpcomponents:httpclient:4.5.2'
 	compile 'org.glassfish:javax.json:1.0.4'
-	compile 'org.tukaani:xz:1.5'
 }
 
 
