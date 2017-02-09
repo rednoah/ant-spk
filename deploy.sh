@@ -1,2 +1,2 @@
 #/bin/sh
-gradle clean uploadArchives
+gradle clean uploadArchives && open "https://oss.sonatype.org/#stagingRepositories"
