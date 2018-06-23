@@ -186,9 +186,6 @@ public class RepositoryTask extends Task {
 				if (!spk.file.exists()) {
 					spk.file.getParentFile().mkdirs();
 				}
-				if (spk.url == null) {
-					spk.url = spk.url;
-				}
 				Get get = new Get();
 				get.bindToOwner(this);
 				get.setQuiet(true);
