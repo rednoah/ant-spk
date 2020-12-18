@@ -15,7 +15,7 @@
 			<info name="dsmappname" value="org.example.HelloWorld" />
 			<info name="dsmuidir" value="dsm" />
 
-			<icon size="72" file="app/dsm/images/icon_72.png" />
+			<icon file="app/dsm/images/icon_64.png" />
 			<icon size="256" file="app/dsm/images/icon_256.png" />
 
 			<wizard dir="spk/wizard" />
@@ -23,16 +23,13 @@
 
 			<package dir="app" includes="**/*.sh" filemode="755" />
 			<package dir="app" excludes="**/*.sh" />
-
-			<codesign keyid="D545C93D" secring="gpg/secring.gpg" password="" />
 		</syno:spk>
 
-		<syno:package-source file="dist/spksrc.json">
-			<keyring file="gpg/alice.pub" />
+		<syno:package-source file="dist/syno.json">
 			<spk file="dist/${package}-${version}-noarch.spk">
-				<info name="link" value="http://packages.example.org/${package}-${version}-noarch.spk" />
-				<thumbnail url="http://images.example.org/${package}/thumbnail.png" />
-				<snapshot url="http://images.example.org/${package}/screenshot.png" />
+				<info name="link" value="https://packages.example.org/${package}-${version}-noarch.spk" />
+				<thumbnail url="https://images.example.org/${package}/thumbnail.png" />
+				<snapshot url="https://images.example.org/${package}/screenshot.png" />
 			</spk>
 		</syno:package-source>
 	</target>

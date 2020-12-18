@@ -31,7 +31,7 @@ Have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](https://
 			<info name="dsmappname" value="org.example.HelloWorld" />
 			<info name="dsmuidir" value="dsm" />
 
-			<icon size="72" file="app/dsm/images/icon_72.png" />
+			<icon file="app/dsm/images/icon_64.png" />
 			<icon size="256" file="app/dsm/images/icon_256.png" />
 
 			<wizard dir="spk/wizard" />
@@ -39,8 +39,6 @@ Have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](https://
 
 			<package dir="app" includes="**/*.sh" filemode="755" />
 			<package dir="app" excludes="**/*.sh" />
-
-			<codesign keyid="D545C93D" secring="gpg/secring.gpg" password="" />
 		</syno:spk>
 
 	</target>
@@ -51,11 +49,11 @@ Have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](https://
 ## Downloads
 [ant-spk](https://github.com/rednoah/ant-spk) is available on available on [Maven Central](https://mvnrepository.com/artifact/net.filebot/ant-spk). Use [Apache Ivy](http://ant.apache.org/ivy/) to retrieve all the dependencies:
 ```xml
-<dependency org="net.filebot" name="ant-spk" rev="latest.release" />
+<dependency org="net.filebot" name="ant-spk" rev="0.7" />
 ```
 
 ## Build
 [ant-spk](https://github.com/rednoah/ant-spk) uses the [Gradle](https://gradle.org/gradle-download/) build tool. Call `gradle example` to fetch all dependencies and build the example project.
 
 ## Real World Examples
-[ant-spk](https://github.com/rednoah/ant-spk) is used to automatically build `.spk` packages for the [FileBot](http://www.filebot.net/) project, so check out [filebot-node](https://github.com/filebot/filebot-node) [build.xml](https://github.com/filebot/filebot-node/blob/master/build.xml) or [java-installer](https://github.com/rednoah/java-installer) [build.xml](https://github.com/rednoah/java-installer/blob/master/build.xml) or [ant-installer](https://github.com/rednoah/ant-installer) [build.xml](https://github.com/rednoah/ant-installer/blob/master/build.xml) for a set of more comprehensive examples. 🚀
+[ant-spk](https://github.com/rednoah/ant-spk) is used to automatically build `.spk` packages for the [FileBot](http://www.filebot.net/) project, so check out [filebot-node](https://github.com/filebot/filebot-node) [build.xml](https://github.com/filebot/filebot-node/blob/master/build.xml) or [java-installer](https://github.com/rednoah/java-installer) [build.xml](https://github.com/rednoah/java-installer/blob/master/build.xml) for a set of more comprehensive examples. 🚀

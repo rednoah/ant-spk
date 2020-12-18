@@ -7,9 +7,14 @@ apply plugin: 'signing'
 
 group = 'net.filebot'
 archivesBaseName = 'ant-spk'
-version = '0.6'
+version = '0.7'
 
 
+
+compileJava {
+	sourceCompatibility = '1.8'
+	targetCompatibility = '1.8'
+}
 
 task javadocJar(type: Jar) {
 	classifier = 'javadoc'
@@ -38,13 +43,13 @@ repositories {
 }
 
 dependencies {
-	compileOnly 'org.apache.ant:ant:1.10.1'
-	compile 'org.bouncycastle:bcprov-jdk15on:1.56'
-	compile 'org.bouncycastle:bcpg-jdk15on:1.56'
-	compile 'org.apache.httpcomponents:httpcore:4.4.6'
-	compile 'org.apache.httpcomponents:httpmime:4.5.2'
-	compile 'org.apache.httpcomponents:httpclient:4.5.2'
-	compile 'org.glassfish:javax.json:1.0.4'
+	compileOnly 'org.apache.ant:ant:1.10.9'
+	compile 'org.bouncycastle:bcprov-jdk15on:1.67'
+	compile 'org.bouncycastle:bcpg-jdk15on:1.67'
+	compile 'org.apache.httpcomponents:httpcore:4.4.14'
+	compile 'org.apache.httpcomponents:httpmime:4.5.13'
+	compile 'org.apache.httpcomponents:httpclient:4.5.13'
+	compile 'org.glassfish:javax.json:1.1.4'
 }
 
 

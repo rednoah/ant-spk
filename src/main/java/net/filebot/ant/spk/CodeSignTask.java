@@ -28,7 +28,7 @@ import org.apache.tools.ant.taskdefs.Tar.TarFileSet;
 import org.apache.tools.ant.types.Resource;
 import org.bouncycastle.openpgp.PGPException;
 
-import net.filebot.ant.spk.openpgp.OpenPGPSignature;
+import net.filebot.ant.spk.pgp.OpenPGPSignature;
 
 public class CodeSignTask extends Task {
 

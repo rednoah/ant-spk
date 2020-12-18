@@ -4,15 +4,23 @@ import java.io.File;
 
 public class Icon {
 
-	IconSize size;
+	Integer size;
 	File file;
 
-	public void setSize(IconSize size) {
+	public void setSize(Integer size) {
 		this.size = size;
 	}
 
 	public void setFile(File file) {
 		this.file = file;
+	}
+
+	public String getPackageName() {
+		if (size == null || size.equals(64) || size.equals(72)) {
+			return "PACKAGE_ICON.PNG";
+		} else {
+			return "PACKAGE_ICON_" + size + ".PNG";
+		}
 	}
 
 }

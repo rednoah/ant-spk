@@ -1,16 +1,15 @@
 package net.filebot.ant.spk;
 
+import static java.nio.charset.StandardCharsets.*;
 import static net.filebot.ant.spk.Info.*;
 import static net.filebot.ant.spk.util.Digest.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -81,7 +80,7 @@ public class PackageTask extends Task {
 
 	public void addConfiguredIcon(Icon icon) {
 		TarFileSet files = new TarFileSet();
-		files.setFullpath(icon.size.getFileName());
+		files.setFullpath(icon.getPackageName());
 		files.setFile(icon.file);
 		spkFiles.add(files);
 	}
@@ -162,15 +161,15 @@ public class PackageTask extends Task {
 
 	private void prepareInfo(File tempDirectory) {
 		StringBuilder infoText = new StringBuilder();
-		for (Entry<String, String> it : infoList.entrySet()) {
-			infoText.append(it.getKey()).append('=').append('"').append(it.getValue()).append('"').append('\n');
-		}
+		infoList.forEach((k, v) -> {
+			infoText.append(k).append('=').append('"').append(v).append('"').append('\n');
+		});
 
 		File infoFile = new File(tempDirectory, INFO);
 		log("Generating INFO: " + infoFile);
 		try {
-			Files.write(infoFile.toPath(), infoText.toString().getBytes("UTF-8"));
-		} catch (IOException e) {
+			Files.write(infoFile.toPath(), infoText.toString().getBytes(UTF_8));
+		} catch (Exception e) {
 			throw new BuildException("Failed to write INFO", e);
 		}
 

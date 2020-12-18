@@ -1,14 +1,13 @@
 package net.filebot.ant.spk;
 
+import static java.nio.charset.StandardCharsets.*;
 import static java.util.Collections.*;
 import static net.filebot.ant.spk.PackageTask.*;
 import static net.filebot.ant.spk.util.Digest.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -127,11 +126,12 @@ public class RepositoryTask extends Task {
 				}
 			}
 
-			JsonArrayBuilder jsonKeyrings = Json.createArrayBuilder();
-			keyrings.forEach(jsonKeyrings::add);
-
 			JsonObjectBuilder jsonRoot = Json.createObjectBuilder();
-			jsonRoot.add(KEYRINGS, jsonKeyrings);
+			if (keyrings.size() > 0) {
+				JsonArrayBuilder jsonKeyrings = Json.createArrayBuilder();
+				keyrings.forEach(jsonKeyrings::add);
+				jsonRoot.add(KEYRINGS, jsonKeyrings);
+			}
 			jsonRoot.add(PACKAGES, jsonPackages);
 
 			log("Write Package Source: " + index);
@@ -139,17 +139,17 @@ public class RepositoryTask extends Task {
 			try (JsonWriter writer = Json.createWriterFactory(singletonMap(JsonGenerator.PRETTY_PRINTING, true)).createWriter(json)) {
 				writer.writeObject(jsonRoot.build());
 			}
-			Files.write(index.toPath(), json.toString().trim().getBytes(StandardCharsets.UTF_8));
-		} catch (IOException e) {
+			Files.write(index.toPath(), json.toString().trim().getBytes(UTF_8));
+		} catch (Exception e) {
 			throw new BuildException(e);
 		}
 	}
 
-	public List<String> getKeyRings() throws IOException {
+	public List<String> getKeyRings() throws Exception {
 		List<String> keys = new ArrayList<String>();
 		for (Resource resource : keyrings) {
 			log("Include keyring: " + resource.getName());
-			String key = FileUtils.readFully(new InputStreamReader(resource.getInputStream(), StandardCharsets.US_ASCII));
+			String key = FileUtils.readFully(new InputStreamReader(resource.getInputStream(), US_ASCII));
 			if (key != null) {
 				keys.add(normalizeKey(key)); // make sure to normalize line endings
 			}
@@ -174,7 +174,7 @@ public class RepositoryTask extends Task {
 	public static final String THUMBNAIL = "thumbnail";
 	public static final String SNAPSHOT = "snapshot";
 
-	public List<Map<String, Object>> getPackages() throws IOException {
+	public List<Map<String, Object>> getPackages() throws Exception {
 		List<Map<String, Object>> packages = new ArrayList<Map<String, Object>>();
 
 		for (SPK spk : spks) {
@@ -206,7 +206,7 @@ public class RepositoryTask extends Task {
 			tar.setIncludes(INFO);
 			for (Resource resource : tar) {
 				if (INFO.equals(resource.getName())) {
-					String text = FileUtils.readFully(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8));
+					String text = FileUtils.readFully(new InputStreamReader(resource.getInputStream(), UTF_8));
 					for (String line : NEWLINE.split(text)) {
 						String[] s = line.split("=", 2);
 						if (s.length == 2) {
@@ -269,6 +269,7 @@ public class RepositoryTask extends Task {
 			info.put("depsers", value);
 			break;
 		case "startable":
+		case "ctl_stop":
 			info.put("start", Project.toBoolean(value));
 			info.put("qstart", Project.toBoolean(value));
 			break;

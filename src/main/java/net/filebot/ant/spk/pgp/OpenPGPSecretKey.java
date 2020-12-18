@@ -1,4 +1,4 @@
-package net.filebot.ant.spk.openpgp;
+package net.filebot.ant.spk.pgp;
 
 import java.io.IOException;
 import java.io.InputStream;
