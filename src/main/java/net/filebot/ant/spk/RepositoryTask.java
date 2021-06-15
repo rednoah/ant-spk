@@ -113,13 +113,19 @@ public class RepositoryTask extends Task {
 			for (URLResource source : sources) {
 				try (JsonReader reader = Json.createReader(source.getInputStream())) {
 					JsonObject json = reader.readObject();
-					for (JsonValue k : json.getJsonArray(KEYRINGS)) {
-						log("Import keyring: " + source);
-						keyrings.add(normalizeKey(((JsonString) k).getString()));
+
+					if (json.getJsonArray(KEYRINGS) != null) {
+						for (JsonValue k : json.getJsonArray(KEYRINGS)) {
+							log("Import keyring: " + source);
+							keyrings.add(normalizeKey(((JsonString) k).getString()));
+						}
 					}
-					for (JsonValue p : json.getJsonArray(PACKAGES)) {
-						log("Import package: " + (((JsonString) ((JsonObject) p).get(PACKAGE))).getString());
-						jsonPackages.add(p);
+
+					if (json.getJsonArray(PACKAGES) != null) {
+						for (JsonValue p : json.getJsonArray(PACKAGES)) {
+							log("Import package: " + (((JsonString) ((JsonObject) p).get(PACKAGE))).getString());
+							jsonPackages.add(p);
+						}
 					}
 				} catch (Exception e) {
 					throw new BuildException(e);
