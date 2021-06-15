@@ -2,6 +2,7 @@ test:
 	gradle clean build example
 
 deploy:
+	# brew install gradle@6
 	gradle clean uploadArchives
 	# open "https://oss.sonatype.org/#stagingRepositories"
 
