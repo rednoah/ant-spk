@@ -43,9 +43,9 @@ repositories {
 }
 
 dependencies {
-	compileOnly 'org.apache.ant:ant:1.10.9'
-	compile 'org.bouncycastle:bcprov-jdk15on:1.67'
-	compile 'org.bouncycastle:bcpg-jdk15on:1.67'
+	compileOnly 'org.apache.ant:ant:1.10.10'
+	compile 'org.bouncycastle:bcprov-jdk15on:1.69'
+	compile 'org.bouncycastle:bcpg-jdk15on:1.69'
 	compile 'org.apache.httpcomponents:httpcore:4.4.14'
 	compile 'org.apache.httpcomponents:httpmime:4.5.13'
 	compile 'org.apache.httpcomponents:httpclient:4.5.13'
