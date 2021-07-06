@@ -11,7 +11,6 @@ __Ant SPK Task__
 * Much more easy to use than whats in the official Synology SDK docs & tools
 * Automatically create and sign your SPK packages in your automated Ant build
 * Works on Windows, Mac and Linux (including Synology DSM) and any other device that can run Java 8
-* Supports passphrase protected GPG keychains
 
 Have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](https://global.download.synology.com/download/Document/DeveloperGuide/DSM_Developer_Guide.pdf) and read the **Package Structure** section to learn more on how SPK packages work.
 
@@ -49,11 +48,11 @@ Have a quick look at the [Synology DSM  3rd Party Apps Developer Guide](https://
 ## Downloads
 [ant-spk](https://github.com/rednoah/ant-spk) is available on available on [Maven Central](https://mvnrepository.com/artifact/net.filebot/ant-spk). Use [Apache Ivy](http://ant.apache.org/ivy/) to retrieve all the dependencies:
 ```xml
-<dependency org="net.filebot" name="ant-spk" rev="0.7" />
+<dependency org="net.filebot" name="ant-spk" rev="0.7.1" />
 ```
 
 ## Build
-[ant-spk](https://github.com/rednoah/ant-spk) uses the [Gradle](https://gradle.org/gradle-download/) build tool. Call `gradle example` to fetch all dependencies and build the example project.
+[ant-spk](https://github.com/rednoah/ant-spk) uses the [Gradle 6.9](https://gradle.org/gradle-download/) build tool. Call `gradle example` to fetch all dependencies and build the example project.
 
 ## Real World Examples
 [ant-spk](https://github.com/rednoah/ant-spk) is used to automatically build `.spk` packages for the [FileBot](http://www.filebot.net/) project, so check out [filebot-node](https://github.com/filebot/filebot-node) [build.xml](https://github.com/filebot/filebot-node/blob/master/build.xml) or [java-installer](https://github.com/rednoah/java-installer) [build.xml](https://github.com/rednoah/java-installer/blob/master/build.xml) for a set of more comprehensive examples. 🚀
