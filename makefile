@@ -1,13 +1,17 @@
-test:
-	gradle clean build example
+GRADLE := docker run --rm -v "$(PWD)":/ant-spk -w /ant-spk gradle:6-jdk11 gradle
+
+jar:
+	$(GRADLE) clean build
+
+example:
+	cd "$(PWD)/examples/helloworld" && ant -lib "$(PWD)/build/libs" -lib "lib"
 
 deploy:
-	# brew install gradle@6
-	gradle clean uploadArchives
+	$(GRADLE) clean uploadArchives
 	# open "https://oss.sonatype.org/#stagingRepositories"
 
 eclipse:
-	gradle cleanEclipse eclipse
+	$(GRADLE) cleanEclipse eclipse
 
 clean:
 	git reset --hard
